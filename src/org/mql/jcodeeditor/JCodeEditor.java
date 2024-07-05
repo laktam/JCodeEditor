@@ -70,9 +70,11 @@ public class JCodeEditor extends JFrame {
 		JPanel p2 = new JPanel();
 		JPanel p3 = new JPanel();
 		tabbedPane.setPreferredSize(editor.getPreferredSize());// new Dimension(400,400)
-		tabbedPane.add("main", p1);
-		tabbedPane.add("visit", p2);
-		tabbedPane.add("help", p3);
+//		tabbedPane.add("main", p1);
+//		tabbedPane.add("visit", p2);
+//		tabbedPane.add("help", p3);
+		TabbedPaneUtils.addClosableTab(tabbedPane, "file 1");
+		TabbedPaneUtils.addClosableTab(tabbedPane, "file 2");
 
 		editor.add(tabbedPane);
 		add(editor, BorderLayout.CENTER);
@@ -82,15 +84,11 @@ public class JCodeEditor extends JFrame {
 		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
         treeModel = new DefaultTreeModel(root);
 		explorerTree = new JTree(treeModel);
-//		System.out.println(FilesUtiles.getFilesMap());
 	}
 
 	private void createMenuBar() {
 		menuBar = new JMenuBar();
 		JMenu fileMenu = new FileMenu("File",null, treeModel);
-
-		
-
 		menuBar.add(fileMenu);
 		setJMenuBar(menuBar);
 	}
