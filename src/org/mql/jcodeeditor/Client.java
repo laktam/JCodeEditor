@@ -1,7 +1,7 @@
-package org.mql.jtexteditor;
+package org.mql.jcodeeditor;
 
 public class Client {
 	public static void main(String[] args) {
-		new JTextEditor();
+		new JCodeEditor();
 	}
 }
