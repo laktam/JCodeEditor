@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -22,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -57,9 +59,12 @@ public class JCodeEditor extends JFrame {
 	private void createExplorer() {
 		JPanel explorer = new JPanel(new BorderLayout());
 		explorer.setPreferredSize(new Dimension(200, 600));
-		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
-		createExplorerJTree();
+//		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
+		JLabel label = new JLabel("Explorer");
+		label.setBorder(new EmptyBorder(8, 10, 8, 10)); // Top, left, bottom, right padding
+		explorer.add(label,  BorderLayout.PAGE_START);
 		
+		createExplorerJTree();
 		JScrollPane scrollPane = new JScrollPane(explorerTree);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -78,17 +83,13 @@ public class JCodeEditor extends JFrame {
 	}
 
 	private void createEditor() {
-		JPanel editor = new JPanel();
+		JPanel editor = new JPanel(new BorderLayout());
 		editor.setPreferredSize(new Dimension(800, 600));
-//		tabbedPane = new JTabbedPane();
 
-		JPanel p1 = new JPanel();
-		JPanel p2 = new JPanel();
-		JPanel p3 = new JPanel();
-		tabbedPane.setPreferredSize(editor.getPreferredSize());
+//		tabbedPane.setPreferredSize(editor.getPreferredSize());
 		TabbedPaneUtils.openFile(tabbedPane, new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
 		
-		editor.add(tabbedPane);
+		editor.add(tabbedPane,  BorderLayout.CENTER);
 		add(editor, BorderLayout.CENTER);
 	}
 
