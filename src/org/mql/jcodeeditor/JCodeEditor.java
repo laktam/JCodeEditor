@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -54,18 +55,23 @@ public class JCodeEditor extends JFrame {
 	}
 
 	private void createExplorer() {
-		JPanel explorer = new JPanel();
+		JPanel explorer = new JPanel(new BorderLayout());
 		explorer.setPreferredSize(new Dimension(200, 600));
 		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
 		createExplorerJTree();
-		explorer.add(new JScrollPane(explorerTree));// ?????
-		explorerTree.setPreferredSize(
-				new Dimension(explorer.getPreferredSize().width - 5, explorer.getPreferredSize().height - 5));
+		
+		JScrollPane scrollPane = new JScrollPane(explorerTree);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		explorer.add(scrollPane,  BorderLayout.CENTER);
+//		explorerTree.setPreferredSize(
+//				new Dimension(explorer.getPreferredSize().width - 5, explorer.getPreferredSize().height - 5));
 		add(explorer, BorderLayout.LINE_START);
 	}
 	
 	public void createExplorerJTree() {
 		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
+//		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         treeModel = new DefaultTreeModel(root);
 		explorerTree = new JTree(treeModel);
 		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, tabbedPane));
