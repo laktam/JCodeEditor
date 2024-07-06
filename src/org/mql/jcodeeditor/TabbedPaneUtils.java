@@ -24,38 +24,35 @@ public class TabbedPaneUtils {
 		addClosableTab(pane, file.getName());
 		JTextArea textArea = new JTextArea();
 		textArea.setLineWrap(true); // Enable line wrapping
-        textArea.setWrapStyleWord(true); // Wrap at word boundaries
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        
-        
-        
+		textArea.setWrapStyleWord(true); // Wrap at word boundaries
+		JScrollPane scrollPane = new JScrollPane(textArea);
+
 		// read file
-        String content = "";
+		String content = "";
 		try {
 			content = readFile(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        textArea.setText(content);
+		textArea.setText(content);
 
-	pane.setComponentAt(pane.getTabCount()-1, scrollPane);
+		pane.setComponentAt(pane.getTabCount() - 1, scrollPane);
 
 	}
-	
+
 	private static String readFile(File file) throws IOException {
-        StringBuilder content = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-        }
-        return content.toString();
-    }
+		StringBuilder content = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				content.append(line).append("\n");
+			}
+		}
+		return content.toString();
+	}
 
 	public static void addClosableTab(JTabbedPane tabbedPane, String title) {
 		JPanel panel = new JPanel();
-		panel.add(new JLabel("Content of " + title));
 		tabbedPane.addTab(title, panel);
 		tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(panel), createTabComponent(tabbedPane, panel, title));
 	}
@@ -68,12 +65,15 @@ public class TabbedPaneUtils {
 		tabComponent.add(label);
 
 		JButton closeButton = new JButton("x");
-		closeButton.setPreferredSize(new Dimension(17, 17));
+		closeButton.setPreferredSize(new Dimension(13, 13));
 		closeButton.setMargin(new Insets(0, 0, 0, 0));
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tabbedPane.remove(panel);
+				int index = tabbedPane.indexOfTabComponent(tabComponent);
+				if (index != -1) {
+					tabbedPane.remove(index);
+				}
 			}
 		});
 		tabComponent.add(closeButton);
