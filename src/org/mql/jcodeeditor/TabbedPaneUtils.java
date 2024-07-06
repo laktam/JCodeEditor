@@ -37,6 +37,7 @@ public class TabbedPaneUtils {
 		textArea.setText(content);
 
 		pane.setComponentAt(pane.getTabCount() - 1, scrollPane);
+		pane.setSelectedIndex(pane.getTabCount() - 1);
 
 	}
 
