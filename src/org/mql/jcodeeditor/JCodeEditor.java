@@ -26,6 +26,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
+import org.mql.jcodeeditor.eventlisteners.explorerJTree.DoubleClickListener;
 import org.mql.jcodeeditor.menubar.menu.FileMenu;
 
 public class JCodeEditor extends JFrame {
@@ -55,7 +56,7 @@ public class JCodeEditor extends JFrame {
 		explorer.setPreferredSize(new Dimension(200, 600));
 		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
 		createExplorerJTree();
-		explorer.add(explorerTree);
+		explorer.add(new JScrollPane(explorerTree));// ?????
 		explorerTree.setPreferredSize(
 				new Dimension(explorer.getPreferredSize().width - 5, explorer.getPreferredSize().height - 5));
 		add(explorer, BorderLayout.LINE_START);
@@ -69,13 +70,9 @@ public class JCodeEditor extends JFrame {
 		JPanel p1 = new JPanel();
 		JPanel p2 = new JPanel();
 		JPanel p3 = new JPanel();
-		tabbedPane.setPreferredSize(editor.getPreferredSize());// new Dimension(400,400)
-//		tabbedPane.add("main", p1);
-//		tabbedPane.add("visit", p2);
-//		tabbedPane.add("help", p3);
-		TabbedPaneUtils.addClosableTab(tabbedPane, "file 1");
-		TabbedPaneUtils.addClosableTab(tabbedPane, "file 2");
-
+		tabbedPane.setPreferredSize(editor.getPreferredSize());
+		TabbedPaneUtils.openFile(tabbedPane, new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
+		
 		editor.add(tabbedPane);
 		add(editor, BorderLayout.CENTER);
 	}
@@ -84,6 +81,7 @@ public class JCodeEditor extends JFrame {
 		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
         treeModel = new DefaultTreeModel(root);
 		explorerTree = new JTree(treeModel);
+		explorerTree.addMouseListener(new DoubleClickListener(explorerTree));
 	}
 
 	private void createMenuBar() {

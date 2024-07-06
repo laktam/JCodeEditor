@@ -5,14 +5,54 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 
 public class TabbedPaneUtils {
+
+	public static void openFile(JTabbedPane pane, File file) {
+		addClosableTab(pane, file.getName());
+		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true); // Enable line wrapping
+        textArea.setWrapStyleWord(true); // Wrap at word boundaries
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        
+        
+        
+		// read file
+        String content = "";
+		try {
+			content = readFile(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        textArea.setText(content);
+
+	pane.setComponentAt(pane.getTabCount()-1, scrollPane);
+
+	}
+	
+	private static String readFile(File file) throws IOException {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        }
+        return content.toString();
+    }
+
 	public static void addClosableTab(JTabbedPane tabbedPane, String title) {
 		JPanel panel = new JPanel();
 		panel.add(new JLabel("Content of " + title));
