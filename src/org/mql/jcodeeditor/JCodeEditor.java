@@ -43,6 +43,8 @@ public class JCodeEditor extends JFrame {
 	public JCodeEditor() {
 		setTitle("JCodeEditor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		tabbedPane = new JTabbedPane();
+
 		createExplorer();
 		createEditor();
 		createMenuBar();
@@ -61,11 +63,18 @@ public class JCodeEditor extends JFrame {
 				new Dimension(explorer.getPreferredSize().width - 5, explorer.getPreferredSize().height - 5));
 		add(explorer, BorderLayout.LINE_START);
 	}
+	
+	public void createExplorerJTree() {
+		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
+        treeModel = new DefaultTreeModel(root);
+		explorerTree = new JTree(treeModel);
+		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, tabbedPane));
+	}
 
 	private void createEditor() {
 		JPanel editor = new JPanel();
 		editor.setPreferredSize(new Dimension(800, 600));
-		tabbedPane = new JTabbedPane();
+//		tabbedPane = new JTabbedPane();
 
 		JPanel p1 = new JPanel();
 		JPanel p2 = new JPanel();
@@ -77,12 +86,7 @@ public class JCodeEditor extends JFrame {
 		add(editor, BorderLayout.CENTER);
 	}
 
-	public void createExplorerJTree() {
-		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
-        treeModel = new DefaultTreeModel(root);
-		explorerTree = new JTree(treeModel);
-		explorerTree.addMouseListener(new DoubleClickListener(explorerTree));
-	}
+	
 
 	private void createMenuBar() {
 		menuBar = new JMenuBar();
