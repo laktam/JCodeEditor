@@ -3,7 +3,9 @@ package org.mql.jcodeeditor;
 import java.awt.Component;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.swing.Icon;
 import javax.swing.JTree;
@@ -13,6 +15,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 public class FilesUtiles {
 	private static Map<DefaultMutableTreeNode, File> filesMap;
+	private static List<File> openFiles = new Vector<File>();
 
 	// add files and folders to explorer JTree
 	public static DefaultMutableTreeNode openFileInExplorer(String path) {
@@ -46,6 +49,10 @@ public class FilesUtiles {
 
 	public static Map<DefaultMutableTreeNode, File> getFilesMap() {
 		return filesMap;
+	}
+	
+	public static List<File> getOpenFiles() {
+		return openFiles;
 	}
 
 

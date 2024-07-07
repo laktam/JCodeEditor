@@ -93,7 +93,7 @@ public class JCodeEditor extends JFrame {
 	private void createEditor() {
 		JPanel editorPanel = new JPanel(new BorderLayout());
 		editorPanel.setPreferredSize(new Dimension(800, 600));
-		editor.openFile(new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
+//		editor.openFile(new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
 		editorPanel.add(editor,  BorderLayout.CENTER);
 		add(editorPanel, BorderLayout.CENTER);
 	}

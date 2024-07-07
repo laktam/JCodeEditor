@@ -31,8 +31,9 @@ public class DoubleClickListener extends MouseAdapter {
 //                 JOptionPane.showMessageDialog(null, "Double-clicked on: " + node.getUserObject());
 				// check if it is a file
 				File clickedFile = FilesUtiles.getFilesMap().get(node);
-				if(clickedFile.isFile()) {
+				if(clickedFile.isFile() && !FilesUtiles.getOpenFiles().contains(clickedFile)) {
 					editor.openFile(clickedFile);
+					FilesUtiles.getOpenFiles().add(clickedFile);
 				}
 			}
 		}
