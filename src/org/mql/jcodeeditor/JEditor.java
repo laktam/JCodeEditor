@@ -26,10 +26,14 @@ import javax.swing.KeyStroke;
 
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 
-public class TabbedPaneUtils {
+public class JEditor extends JTabbedPane{
+	
+	public JEditor() {
+		// TODO Auto-generated constructor stub
+	}
 
-	public static void openFile(JTabbedPane pane, File file) {
-		addClosableTab(pane, file.getName());
+	public  void openFile( File file) {
+		addClosableTab(file.getName());
 		JTextArea textArea = new JTextArea();
 		textArea.setLineWrap(true); // Enable line wrapping
 		textArea.setWrapStyleWord(true); // Wrap at word boundaries
@@ -61,8 +65,8 @@ public class TabbedPaneUtils {
 		}
 		textArea.setText(content);
 
-		pane.setComponentAt(pane.getTabCount() - 1, scrollPane);
-		pane.setSelectedIndex(pane.getTabCount() - 1);
+		setComponentAt(this.getTabCount() - 1, scrollPane);
+		setSelectedIndex(this.getTabCount() - 1);
 
 	}
 
@@ -77,13 +81,13 @@ public class TabbedPaneUtils {
 		return content.toString();
 	}
 
-	public static void addClosableTab(JTabbedPane tabbedPane, String title) {
+	public void addClosableTab( String title) {
 		JPanel panel = new JPanel();
-		tabbedPane.addTab(title, panel);
-		tabbedPane.setTabComponentAt(tabbedPane.indexOfComponent(panel), createTabComponent(tabbedPane, panel, title));
+		addTab(title, panel);
+		setTabComponentAt(this.indexOfComponent(panel), createTabComponent( panel, title));
 	}
 
-	private static JComponent createTabComponent(JTabbedPane tabbedPane, JPanel panel, String title) {
+	private JComponent createTabComponent(JPanel panel, String title) {
 		JPanel tabComponent = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		tabComponent.setOpaque(false);
 
@@ -96,9 +100,9 @@ public class TabbedPaneUtils {
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTabComponent(tabComponent);
+				int index =  JEditor.this.indexOfTabComponent(tabComponent);
 				if (index != -1) {
-					tabbedPane.remove(index);
+					JEditor.this.remove(index);
 				}
 			}
 		});

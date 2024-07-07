@@ -11,15 +11,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import org.mql.jcodeeditor.FilesUtiles;
-import org.mql.jcodeeditor.TabbedPaneUtils;
+import org.mql.jcodeeditor.JEditor;
 
 public class DoubleClickListener extends MouseAdapter {
 	private JTree tree;
-	private JTabbedPane tabbedPane;
+	private JEditor editor;
 
-	public DoubleClickListener(JTree tree, JTabbedPane tabbedPane) {
+	public DoubleClickListener(JTree tree, JEditor editor) {
 		this.tree = tree;
-		this.tabbedPane  = tabbedPane;
+		this.editor  = editor;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class DoubleClickListener extends MouseAdapter {
 				// check if it is a file
 				File clickedFile = FilesUtiles.getFilesMap().get(node);
 				if(clickedFile.isFile()) {
-					TabbedPaneUtils.openFile(tabbedPane, clickedFile);
+					editor.openFile(clickedFile);
 				}
 			}
 		}

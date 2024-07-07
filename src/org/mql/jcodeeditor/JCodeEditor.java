@@ -45,7 +45,7 @@ public class JCodeEditor extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTabbedPane tabbedPane;
+	private JEditor editor;
 	private JTree explorerTree;
 	private DefaultTreeModel treeModel;
 	private JMenuBar menuBar;
@@ -53,7 +53,7 @@ public class JCodeEditor extends JFrame {
 	public JCodeEditor() {
 		setTitle("JCodeEditor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		tabbedPane = new JTabbedPane();
+		editor = new JEditor();
 
 		createExplorer();
 		createEditor();
@@ -87,35 +87,15 @@ public class JCodeEditor extends JFrame {
         treeModel = new DefaultTreeModel(root);
 		explorerTree = new JTree(treeModel);
 		explorerTree.setCellRenderer(new CustomTreeCellRenderer());
-		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, tabbedPane));
+		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, editor));
 	}
 
 	private void createEditor() {
-		JPanel editor = new JPanel(new BorderLayout());
-		editor.setPreferredSize(new Dimension(800, 600));
-
-//		tabbedPane.setPreferredSize(editor.getPreferredSize());
-		TabbedPaneUtils.openFile(tabbedPane, new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
-//		this.addKeyListener(new KeyboardSavingListener());
-		
-//		InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_FOCUSED);
-//	    ActionMap actionMap = getRootPane().getActionMap();
-//
-//	    KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK);
-//	    AbstractAction saveAction = new AbstractAction() {
-//	      @Override
-//	      public void actionPerformed(ActionEvent e) {
-//	        System.out.println("Ctrl + S detected!");
-//	        // Perform your save action here.
-//	      }
-//	    };
-//	    inputMap.put(ctrlSKeyStroke, "saveAction");
-//	    actionMap.put("saveAction", saveAction);
-//	  
-		
-		
-		editor.add(tabbedPane,  BorderLayout.CENTER);
-		add(editor, BorderLayout.CENTER);
+		JPanel editorPanel = new JPanel(new BorderLayout());
+		editorPanel.setPreferredSize(new Dimension(800, 600));
+		editor.openFile(new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
+		editorPanel.add(editor,  BorderLayout.CENTER);
+		add(editorPanel, BorderLayout.CENTER);
 	}
 
 	
@@ -127,7 +107,7 @@ public class JCodeEditor extends JFrame {
 		setJMenuBar(menuBar);
 	}
 
-	public JTabbedPane getTabbedPane() {
-		return tabbedPane;
+	public JEditor getTabbedPane() {
+		return editor;
 	}
 }
