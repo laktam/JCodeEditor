@@ -41,11 +41,7 @@ public class FilesUtiles {
 				add(f, fileNode);
 			}
 		}
-//		else {
-//			DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(file.getName());
-//			
-//
-//		}
+
 	}
 
 	public static Map<DefaultMutableTreeNode, File> getFilesMap() {

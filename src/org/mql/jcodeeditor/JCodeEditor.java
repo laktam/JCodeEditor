@@ -5,9 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -21,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +36,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
 import org.mql.jcodeeditor.eventlisteners.explorerJTree.DoubleClickListener;
+import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 import org.mql.jcodeeditor.menubar.menu.FileMenu;
 
 public class JCodeEditor extends JFrame {
@@ -89,6 +96,23 @@ public class JCodeEditor extends JFrame {
 
 //		tabbedPane.setPreferredSize(editor.getPreferredSize());
 		TabbedPaneUtils.openFile(tabbedPane, new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
+//		this.addKeyListener(new KeyboardSavingListener());
+		
+//		InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_FOCUSED);
+//	    ActionMap actionMap = getRootPane().getActionMap();
+//
+//	    KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK);
+//	    AbstractAction saveAction = new AbstractAction() {
+//	      @Override
+//	      public void actionPerformed(ActionEvent e) {
+//	        System.out.println("Ctrl + S detected!");
+//	        // Perform your save action here.
+//	      }
+//	    };
+//	    inputMap.put(ctrlSKeyStroke, "saveAction");
+//	    actionMap.put("saveAction", saveAction);
+//	  
+		
 		
 		editor.add(tabbedPane,  BorderLayout.CENTER);
 		add(editor, BorderLayout.CENTER);
