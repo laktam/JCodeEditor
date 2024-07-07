@@ -79,6 +79,7 @@ public class JCodeEditor extends JFrame {
 //		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         treeModel = new DefaultTreeModel(root);
 		explorerTree = new JTree(treeModel);
+		explorerTree.setCellRenderer(new CustomTreeCellRenderer());
 		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, tabbedPane));
 	}
 

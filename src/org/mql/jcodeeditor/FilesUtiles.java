@@ -1,11 +1,15 @@
 package org.mql.jcodeeditor;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Icon;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 public class FilesUtiles {
 	private static Map<DefaultMutableTreeNode, File> filesMap;
@@ -47,39 +51,8 @@ public class FilesUtiles {
 	public static Map<DefaultMutableTreeNode, File> getFilesMap() {
 		return filesMap;
 	}
-//	public void createExplorerJTree() {
-//		// nœud racine
-//		DefaultMutableTreeNode framework = new DefaultMutableTreeNode("Framework");
-//		// nœud interne 1
-//		DefaultMutableTreeNode front = new DefaultMutableTreeNode("Front-End");
-//		// nœud interne 2
-//		DefaultMutableTreeNode back = new DefaultMutableTreeNode("Back-End");
-//		// feuille
-//		DefaultMutableTreeNode autres = new DefaultMutableTreeNode("Autres");
-//
-//		// Ajouter le nœud interne 1 au nœud racine
-//		framework.add(front);
-//		// Ajouter les feuille au nœud 1
-//		DefaultMutableTreeNode angular = new DefaultMutableTreeNode("AngularJS");
-//		DefaultMutableTreeNode react = new DefaultMutableTreeNode("React.js");
-//		DefaultMutableTreeNode meteor = new DefaultMutableTreeNode("Meteor.js");
-//		DefaultMutableTreeNode ember = new DefaultMutableTreeNode("Ember.js ");
-//		front.add(angular);
-//		front.add(react);
-//		front.add(meteor);
-//		front.add(ember);
-//
-//		// Ajouter le nœud interne 2 au nœud racine
-//		framework.add(back);
-//		// Ajouter les feuille au nœud 2
-//		DefaultMutableTreeNode nodejs = new DefaultMutableTreeNode("NodeJS");
-//		DefaultMutableTreeNode express = new DefaultMutableTreeNode("Express");
-//		back.add(nodejs);
-//		back.add(express);
-//
-//		// Ajouter la feuille au nœud racine
-//		framework.add(autres);
-//
-//		explorerTree = new JTree(framework);
-//	}
+
+
+	 
+
 }
