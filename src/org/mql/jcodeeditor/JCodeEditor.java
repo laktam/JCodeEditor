@@ -46,7 +46,7 @@ public class JCodeEditor extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JEditor editor;
-	private JTree explorerTree;
+	private JExplorer explorerTree;
 	private DefaultTreeModel treeModel;
 	private JMenuBar menuBar;
 
@@ -82,10 +82,12 @@ public class JCodeEditor extends JFrame {
 	}
 	
 	public void createExplorerJTree() {
-		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
-//		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-        treeModel = new DefaultTreeModel(root);
-		explorerTree = new JTree(treeModel);
+//		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
+//		treeModel = new DefaultTreeModel(root);
+//		explorerTree = new JTree(treeModel);
+		explorerTree = new JExplorer();
+//		
+//		explorerTree.openFileInExplorer();
 		explorerTree.setCellRenderer(new CustomTreeCellRenderer());
 		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, editor));
 	}
@@ -102,7 +104,7 @@ public class JCodeEditor extends JFrame {
 
 	private void createMenuBar() {
 		menuBar = new JMenuBar();
-		JMenu fileMenu = new FileMenu("File",null, treeModel);
+		JMenu fileMenu = new FileMenu("File",null, treeModel,explorerTree);
 		menuBar.add(fileMenu);
 		setJMenuBar(menuBar);
 	}

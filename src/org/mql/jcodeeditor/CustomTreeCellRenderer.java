@@ -27,7 +27,7 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		File file = FilesUtiles.getFilesMap().get(node);
+		File file = JExplorer.getFilesMap().get(node);
 		
 		if (expanded) {
 			setIcon(openIcon);

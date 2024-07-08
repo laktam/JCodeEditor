@@ -10,7 +10,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.mql.jcodeeditor.FilesUtiles;
+import org.mql.jcodeeditor.JExplorer;
 import org.mql.jcodeeditor.JEditor;
 
 public class DoubleClickListener extends MouseAdapter {
@@ -30,10 +30,10 @@ public class DoubleClickListener extends MouseAdapter {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 //                 JOptionPane.showMessageDialog(null, "Double-clicked on: " + node.getUserObject());
 				// check if it is a file
-				File clickedFile = FilesUtiles.getFilesMap().get(node);
-				if(clickedFile.isFile() && !FilesUtiles.getOpenFiles().contains(clickedFile)) {
+				File clickedFile = JExplorer.getFilesMap().get(node);
+				if(clickedFile.isFile() && !JExplorer.getOpenFiles().contains(clickedFile)) {
 					editor.openFile(clickedFile);
-					FilesUtiles.getOpenFiles().add(clickedFile);
+					JExplorer.getOpenFiles().add(clickedFile);
 				}
 			}
 		}

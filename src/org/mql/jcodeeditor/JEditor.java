@@ -103,7 +103,7 @@ public class JEditor extends JTabbedPane{
 				int index =  JEditor.this.indexOfTabComponent(tabComponent);
 				if (index != -1) {
 					JEditor.this.remove(index);
-					FilesUtiles.getOpenFiles().remove(index);
+					JExplorer.getOpenFiles().remove(index);
 				}
 			}
 		});
