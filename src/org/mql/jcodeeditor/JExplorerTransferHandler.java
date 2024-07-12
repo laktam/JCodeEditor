@@ -78,6 +78,21 @@ public class JExplorerTransferHandler extends TransferHandler {
 
 	@Override
 	public boolean canImport(TransferSupport support) {
+		//test if the root is being moved
+//		Transferable t = support.getTransferable();
+//		DefaultMutableTreeNode[] movedNodes;
+		try {
+//			movedNodes = (DefaultMutableTreeNode[]) t.getTransferData(nodesFlavor);
+			for(DefaultMutableTreeNode node:selectedNodes) {
+				if(node.isRoot()) {
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
 		DefaultMutableTreeNode transferDestination = (DefaultMutableTreeNode) dl.getPath().getLastPathComponent();
 		if (transferDestination.getUserObject() instanceof File) {
@@ -119,9 +134,9 @@ public class JExplorerTransferHandler extends TransferHandler {
 			// i need to create real files here
 			// then i need to change userObject (file) to reflect the move
 			// delete older nodes
-//			for (DefaultMutableTreeNode selectedNode : selectedNodes) {
-//				model.removeNodeFromParent(selectedNode);
-//			}
+			for (DefaultMutableTreeNode selectedNode : selectedNodes) {
+				model.removeNodeFromParent(selectedNode);
+			}
 		}
 		return super.importData(support);
 	}
