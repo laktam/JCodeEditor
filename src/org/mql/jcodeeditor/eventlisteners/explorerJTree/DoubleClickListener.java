@@ -19,7 +19,7 @@ public class DoubleClickListener extends MouseAdapter {
 
 	public DoubleClickListener(JTree tree, JEditor editor) {
 		this.tree = tree;
-		this.editor  = editor;
+		this.editor = editor;
 	}
 
 	@Override
@@ -30,10 +30,12 @@ public class DoubleClickListener extends MouseAdapter {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
 //                 JOptionPane.showMessageDialog(null, "Double-clicked on: " + node.getUserObject());
 				// check if it is a file
-				File clickedFile = JExplorer.getFilesMap().get(node);
-				if(clickedFile.isFile() && !JExplorer.getOpenFiles().contains(clickedFile)) {
-					editor.openFile(clickedFile);
-					JExplorer.getOpenFiles().add(clickedFile);
+				if (node.getUserObject() instanceof File) {
+					File clickedFile = (File) node.getUserObject();
+					if (clickedFile.isFile() && !JExplorer.getOpenFiles().contains(clickedFile)) {
+						editor.openFile(clickedFile);
+						JExplorer.getOpenFiles().add(clickedFile);
+					}
 				}
 			}
 		}

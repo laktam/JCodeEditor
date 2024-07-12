@@ -3,6 +3,7 @@ package org.mql.jcodeeditor;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -46,12 +47,12 @@ public class TreeTransferHandler extends TransferHandler {
 		/////// added by me
 		JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
 		DefaultMutableTreeNode transferDestination = (DefaultMutableTreeNode) dl.getPath().getLastPathComponent();
-
-		if (JExplorer.getFilesMap().get(transferDestination).isFile()) {
-			System.out.println("trying to drag into a file");
-			return false;
+		if (transferDestination.getUserObject() instanceof File) {
+			if (((File) transferDestination.getUserObject()).isFile()) {
+				System.out.println("trying to drag into a file");
+				return false;
+			}
 		}
-
 		///////
 		if (!support.isDrop()) {
 			return false;
@@ -191,7 +192,7 @@ public class TreeTransferHandler extends TransferHandler {
 		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) dest.getLastPathComponent();
 		JTree tree = (JTree) support.getComponent();
 		DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-		
+
 		// Configure for drop mode.
 		int index = childIndex; // DropMode.INSERT
 		if (childIndex == -1) { // DropMode.ON
@@ -215,23 +216,28 @@ public class TreeTransferHandler extends TransferHandler {
 			System.out.println(path);
 		}
 
-		DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode)  initialPaths[initialPaths.length - 1].getLastPathComponent();
-//		DefaultMutableTreeNode destinationNode = (DefaultMutableTreeNode)  newPaths[newPaths.length - 1].getLastPathComponent();
-		System.out.println("src node " + sourceNode.getParent());
-		
-		
+		DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) initialPaths[initialPaths.length - 1]
+				.getLastPathComponent();
+//		DefaultMutableTreeNode destinationNode = (DefaultMutableTreeNode) newPaths[newPaths.length - 1]//???????????????????
+//				.getLastPathComponent();
+		DefaultMutableTreeNode destinationNode = parent;
+		System.out.println("src node " +((File) sourceNode.getUserObject()));
+		System.out.println("parent " +parent);
+		System.out.println("parent file" +((File) parent.getUserObject()));
+		System.out.println("dst node " +(destinationNode));
+
 		try {
-			System.out.println("src path " + JExplorer.getFilesMap().get(sourceNode).toPath());
-			// get tree root path
-			Path rootPath = JExplorer.getFilesMap().get(((DefaultMutableTreeNode) model.getRoot())).toPath();
-			
-			FileMover.moveFileOrDirectory(JExplorer.getFilesMap().get(sourceNode).toPath(), 
-					FileMover.buildPath(rootPath, newPaths));
+
+//			Path destinationPath = FileMover.buildPath(rootPath, newPaths);
+			FileMover.moveFileOrDirectory(((File) sourceNode.getUserObject()).toPath(),
+					((File) destinationNode.getUserObject()).toPath());
+			FileMover.updateFilesInNodes(sourceNode, destinationNode);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return true;
 	}
 

@@ -27,14 +27,19 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		File file = JExplorer.getFilesMap().get(node);
-		if (file != null) {
-			if (expanded) {
-				setIcon(openIcon);
-			} else if (file.isDirectory()) {
-				setIcon(closedIcon);
-			} else {
-				setIcon(leafIcon);
+		if (node.getUserObject() instanceof File) {
+			File file = (File) node.getUserObject();
+			if (file != null) {
+				if (file.isFile()) {
+					setIcon(leafIcon);
+				} else if (expanded) {
+					setIcon(openIcon);
+				} else if (file.isDirectory()) {
+					setIcon(closedIcon);
+				}
+//			else {
+//				setIcon(leafIcon);
+//			}
 			}
 		}
 

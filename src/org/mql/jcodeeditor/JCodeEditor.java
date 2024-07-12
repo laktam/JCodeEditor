@@ -65,7 +65,7 @@ public class JCodeEditor extends JFrame {
 
 	private void createExplorer() {
 		JPanel explorer = new JPanel(new BorderLayout());
-		explorer.setPreferredSize(new Dimension(200, 600));
+		explorer.setPreferredSize(new Dimension(800, 600));
 //		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
 		JLabel label = new JLabel("Explorer");
 		label.setBorder(new EmptyBorder(8, 10, 8, 10)); // Top, left, bottom, right padding
@@ -90,6 +90,7 @@ public class JCodeEditor extends JFrame {
 //		explorerTree.openFileInExplorer();
 		explorerTree.setCellRenderer(new CustomTreeCellRenderer());
 		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, editor));
+		
 	}
 
 	private void createEditor() {
