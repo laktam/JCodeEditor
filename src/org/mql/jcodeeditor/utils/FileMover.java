@@ -24,7 +24,8 @@ public class FileMover {
         	Files.move(source, target.resolve(source.getFileName()), StandardCopyOption.REPLACE_EXISTING);
         }
         
-        //delete from the old position
+        //delete directory  from the old position
+        
     }
     
     
@@ -32,6 +33,7 @@ public class FileMover {
     	File destinationFile = (File) destinationNode.getUserObject();
     	File sourceFile = (File) sourceNode.getUserObject();
     	sourceNode.setUserObject(destinationFile.toPath().resolve(sourceFile.getName()).toFile());
+    	System.out.println("result file after moving " + destinationFile.toPath().resolve(sourceFile.getName()).toFile());
     	int c  = sourceNode.getChildCount();
     	for (int i = 0; i < c; i++) {
 			updateFilesInNodes((DefaultMutableTreeNode) sourceNode.getChildAt(i) ,sourceNode);

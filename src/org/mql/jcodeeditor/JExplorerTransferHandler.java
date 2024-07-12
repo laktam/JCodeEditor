@@ -21,6 +21,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.mql.jcodeeditor.TreeTransferHandler.NodesTransferable;
+import org.mql.jcodeeditor.utils.FileMover;
 
 public class JExplorerTransferHandler extends TransferHandler {
 	private static final long serialVersionUID = 1L;
@@ -78,21 +79,17 @@ public class JExplorerTransferHandler extends TransferHandler {
 
 	@Override
 	public boolean canImport(TransferSupport support) {
-		//test if the root is being moved
-//		Transferable t = support.getTransferable();
-//		DefaultMutableTreeNode[] movedNodes;
+		// test if the root is being moved
 		try {
-//			movedNodes = (DefaultMutableTreeNode[]) t.getTransferData(nodesFlavor);
-			for(DefaultMutableTreeNode node:selectedNodes) {
-				if(node.isRoot()) {
+			for (DefaultMutableTreeNode node : selectedNodes) {
+				if (node.isRoot()) {
 					return false;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
 		DefaultMutableTreeNode transferDestination = (DefaultMutableTreeNode) dl.getPath().getLastPathComponent();
 		if (transferDestination.getUserObject() instanceof File) {
@@ -136,6 +133,16 @@ public class JExplorerTransferHandler extends TransferHandler {
 			// delete older nodes
 			for (DefaultMutableTreeNode selectedNode : selectedNodes) {
 				model.removeNodeFromParent(selectedNode);
+			}
+			// move files
+			for (DefaultMutableTreeNode selectedNode : movedNodes) {
+				try {
+					FileMover.moveFileOrDirectory(((File)selectedNode.getUserObject()).toPath(), ((File)dropDestination.getUserObject()).toPath());
+					FileMover.updateFilesInNodes(selectedNode, dropDestination);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		return super.importData(support);
