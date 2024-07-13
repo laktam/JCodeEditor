@@ -1,5 +1,6 @@
 package org.mql.jcodeeditor;
 
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -21,7 +22,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.mql.jcodeeditor.TreeTransferHandler.NodesTransferable;
-import org.mql.jcodeeditor.utils.FileMover;
+import org.mql.jcodeeditor.utils.FileUtils;
 
 public class JExplorerTransferHandler extends TransferHandler {
 	private static final long serialVersionUID = 1L;
@@ -29,6 +30,8 @@ public class JExplorerTransferHandler extends TransferHandler {
 	private DataFlavor[] flavors = new DataFlavor[1];
 	private List<DefaultMutableTreeNode> selectedNodes;
 	private List<DefaultMutableTreeNode> movedNodes;
+	private JTree tree;
+	private int action;
 
 	public JExplorerTransferHandler() {
 //		dragSources = new HashSet<DefaultMutableTreeNode>();
@@ -46,9 +49,10 @@ public class JExplorerTransferHandler extends TransferHandler {
 		return COPY_OR_MOVE;
 	}
 
+	//create transfered elements data
 	@Override
 	protected Transferable createTransferable(JComponent c) {
-		JTree tree = (JTree) c;
+		tree = (JTree) c;
 		TreePath[] selectedNodesPaths = tree.getSelectionPaths();
 		if (selectedNodesPaths == null) {
 			return null;
@@ -70,13 +74,11 @@ public class JExplorerTransferHandler extends TransferHandler {
 		// create a copy of selected nodes with there children
 		movedNodes = copyNodes(selectedNodes);
 		System.out.println("movedNodes size " + movedNodes.size());
-//		for (DefaultMutableTreeNode selectedNode : selectedNodes) {
-//			movedNodes.add(new DefaultMutableTreeNode(selectedNode.getUserObject()));
-//		}
 
 		return new NodesTransferable(movedNodes.toArray(new DefaultMutableTreeNode[movedNodes.size()]));
 	}
 
+	// test if we can drop or past on that position
 	@Override
 	public boolean canImport(TransferSupport support) {
 		// test if the root is being moved
@@ -90,18 +92,36 @@ public class JExplorerTransferHandler extends TransferHandler {
 			e.printStackTrace();
 		}
 
-		JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
-		DefaultMutableTreeNode transferDestination = (DefaultMutableTreeNode) dl.getPath().getLastPathComponent();
-		if (transferDestination.getUserObject() instanceof File) {
-			if (((File) transferDestination.getUserObject()).isFile()) {
-				System.out.println("trying to drag into a file");
-				return false;
+		// drag and drop
+		if (support.isDrop()) {
+//			return false;
+			JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
+			DefaultMutableTreeNode transferDestination = (DefaultMutableTreeNode) dl.getPath().getLastPathComponent();
+			if (transferDestination.getUserObject() instanceof File) {
+				if (((File) transferDestination.getUserObject()).isFile()) {
+					System.out.println("trying to drag into a file");
+					return false;
+				}
+				return true;
 			}
-			return true;
 		}
+		// copy past
+		else {
+			TreePath path = tree.getSelectionPath();
+			DefaultMutableTreeNode transferDestination = (DefaultMutableTreeNode) path.getLastPathComponent();
+			if (transferDestination.getUserObject() instanceof File) {
+				if (((File) transferDestination.getUserObject()).isFile()) {
+					System.out.println("trying to drag into a file");
+					return false;
+				}
+				return true;
+			}
+		}
+
 		return super.canImport(support);
 	}
 
+	// import means to past or to drop the data in destination
 	@Override
 	public boolean importData(TransferSupport support) {
 		if (!canImport(support)) {
@@ -117,39 +137,60 @@ public class JExplorerTransferHandler extends TransferHandler {
 			System.out.println("I/O error: " + ioe.getMessage());
 		}
 		// Get drop location info.
-		JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
-		int childIndex = dl.getChildIndex();
-		TreePath dest = dl.getPath();
-		DefaultMutableTreeNode dropDestination = (DefaultMutableTreeNode) dest.getLastPathComponent();
+
+		DefaultMutableTreeNode dropDestination = null;
+		if (support.isDrop()) {
+			JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
+			TreePath dest = dl.getPath();
+			dropDestination = (DefaultMutableTreeNode) dest.getLastPathComponent();
+		} else {
+			TreePath path = tree.getSelectionPath();
+			dropDestination = (DefaultMutableTreeNode) path.getLastPathComponent();
+		}
+
 		JTree tree = (JTree) support.getComponent();
 		DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-		// inset nodes
-		if (support.getUserDropAction() == MOVE) {
-			for (int i = 0; i < movedNodes.length; i++) {
-				model.insertNodeInto(movedNodes[i], dropDestination, i);
+		// insert nodes
+//		if (support.isDrop()) {
+//			if (support.getUserDropAction() == MOVE) {
+		for (int i = 0; i < movedNodes.length; i++) {
+			model.insertNodeInto(movedNodes[i], dropDestination, i);
+		}
+	
+		// copy files
+		for (DefaultMutableTreeNode selectedNode : movedNodes) {
+			try {
+				FileUtils.copy(((File) selectedNode.getUserObject()).toPath(),
+						((File) dropDestination.getUserObject()).toPath());
+				FileUtils.updateFilesInNodes(selectedNode, dropDestination);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			// i need to create real files here
-			// then i need to change userObject (file) to reflect the move
-			// delete older nodes
+		}
+		if(action == MOVE) {
 			for (DefaultMutableTreeNode selectedNode : selectedNodes) {
 				model.removeNodeFromParent(selectedNode);
 			}
-			// move files
-			for (DefaultMutableTreeNode selectedNode : movedNodes) {
-				try {
-					FileMover.moveFileOrDirectory(((File)selectedNode.getUserObject()).toPath(), ((File)dropDestination.getUserObject()).toPath());
-					FileMover.updateFilesInNodes(selectedNode, dropDestination);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			// delete files
+			
+		}else if(action == COPY) {
+			
 		}
+//			}
+//		}else {
+//			
+//		}
 		return super.importData(support);
 	}
 
+//	@Override
+//	public void exportToClipboard(JComponent comp, Clipboard clip, int action) throws IllegalStateException {
+//		
+//	}
+	// after exporting the data, cleaning : removing files (Move action),...
 	protected void exportDone(JComponent c, Transferable t, int action) {
 		if (action == MOVE) {
+			this.action = MOVE;
 			JTree tree = (JTree) c;
 			try {
 //				DefaultMutableTreeNode selectedNodes[] = (DefaultMutableTreeNode[]) t.getTransferData(nodesFlavor);
@@ -157,12 +198,22 @@ public class JExplorerTransferHandler extends TransferHandler {
 //				for(DefaultMutableTreeNode selectedNode :selectedNodes) {
 //					model.removeNodeFromParent(selectedNode);
 //				}
+				
+				
+//				DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+//				for (DefaultMutableTreeNode selectedNode : selectedNodes) {
+//					model.removeNodeFromParent(selectedNode);
+//				}
+				// delete source files 
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}else if (action == COPY) {
+			this.action = COPY;		}
 	}
 
+	// create a copy of a nodes list with the same userObjects
 	private List<DefaultMutableTreeNode> copyNodes(List<DefaultMutableTreeNode> nodes) {
 		List<DefaultMutableTreeNode> result = new Vector<DefaultMutableTreeNode>();
 		for (DefaultMutableTreeNode selectedNode : selectedNodes) {
@@ -179,7 +230,7 @@ public class JExplorerTransferHandler extends TransferHandler {
 		}
 		return result;
 	}
-
+	// helper
 	private DefaultMutableTreeNode copyNode(DefaultMutableTreeNode node) {
 		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(node.getUserObject());
 		int c = node.getChildCount();
@@ -194,6 +245,7 @@ public class JExplorerTransferHandler extends TransferHandler {
 		return newNode;
 	}
 
+	// the class to hold the transfered nodes (maybe just use the class field)
 	public class NodesTransferable implements Transferable {
 		DefaultMutableTreeNode[] nodes;
 

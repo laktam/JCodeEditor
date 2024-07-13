@@ -20,7 +20,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.mql.jcodeeditor.utils.FileMover;
+import org.mql.jcodeeditor.utils.FileUtils;
 
 import javax.swing.tree.TreeNode;
 
@@ -229,9 +229,9 @@ public class TreeTransferHandler extends TransferHandler {
 		try {
 
 //			Path destinationPath = FileMover.buildPath(rootPath, newPaths);
-			FileMover.moveFileOrDirectory(((File) sourceNode.getUserObject()).toPath(),
+			FileUtils.moveFileOrDirectory(((File) sourceNode.getUserObject()).toPath(),
 					((File) destinationNode.getUserObject()).toPath());
-			FileMover.updateFilesInNodes(sourceNode, destinationNode);
+			FileUtils.updateFilesInNodes(sourceNode, destinationNode);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -10,7 +10,7 @@ import javax.swing.tree.TreePath;
 
 import org.mql.jcodeeditor.JExplorer;
 
-public class FileMover {
+public class FileUtils {
 
     public static void moveFileOrDirectory(Path source, Path target) throws IOException {
         if (Files.isDirectory(source)) {
@@ -28,7 +28,22 @@ public class FileMover {
         
     }
     
+    public static void copy(Path source, Path target) throws IOException {
+        if (Files.isDirectory(source)) {
+        	Path createdFolder =  Files.createDirectories(target.resolve(source.getFileName()));
+            File subFiles[] = source.toFile().listFiles();
+            for(File f: subFiles) {
+            	copy(f.toPath(), createdFolder);
+            }
+            
+        }else {
+        	Files.copy(source, target.resolve(source.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+        }        
+    }
     
+    
+    
+    // update userobject in nodes to reflect real files
     public static void updateFilesInNodes(DefaultMutableTreeNode sourceNode,DefaultMutableTreeNode destinationNode) {
     	File destinationFile = (File) destinationNode.getUserObject();
     	File sourceFile = (File) sourceNode.getUserObject();

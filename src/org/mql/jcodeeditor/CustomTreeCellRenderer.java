@@ -37,10 +37,10 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 				} else if (file.isDirectory()) {
 					setIcon(closedIcon);
 				}
-//			else {
-//				setIcon(leafIcon);
-//			}
+				// Change the text displayed
+				setText(file.getName());
 			}
+
 		}
 
 		return this;
