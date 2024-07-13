@@ -1,6 +1,8 @@
 package org.mql.jcodeeditor;
 
 import java.awt.Component;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -23,7 +25,8 @@ public class JExplorer extends JTree {
 	private DefaultTreeModel treeModel;
 
 	public JExplorer() {
-		treeModel = new DefaultTreeModel(null);
+//		treeModel = new DefaultTreeModel(null);
+		treeModel = new OrderedTreeModel(null);
 		openFileInExplorer("");
 		setModel(treeModel);
 
@@ -33,6 +36,12 @@ public class JExplorer extends JTree {
 		setTransferHandler(new JExplorerTransferHandler());
 		// Expand the tree
 		expandTree();
+		addHierarchyListener(new HierarchyListener() {
+            @Override
+            public void hierarchyChanged(HierarchyEvent e) {
+            	 
+            }
+        });
 	}
 
 	// add files and folders to explorer JTree

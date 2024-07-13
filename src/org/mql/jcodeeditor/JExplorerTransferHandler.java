@@ -196,40 +196,12 @@ public class JExplorerTransferHandler extends TransferHandler {
 			}
 		}
 
-		// copy files
-//		for (DefaultMutableTreeNode selectedNode : movedNodes) {
-//			try {
-//				FileUtils.copy(((File) selectedNode.getUserObject()).toPath(),
-//						((File) dropDestination.getUserObject()).toPath());
-//				FileUtils.updateFilesInNodes(selectedNode, dropDestination);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		if (action == MOVE) {
-//			for (DefaultMutableTreeNode selectedNode : selectedNodes) {
-//				model.removeNodeFromParent(selectedNode);
-//				FileUtils.delete((File) selectedNode.getUserObject());
-//			}
-//		} else if (action == COPY) {
-//
-//		}
 		return super.importData(support);
 	}
 
-//	@Override
-//	public void exportToClipboard(JComponent comp, Clipboard clip, int action) throws IllegalStateException {
-//		
-//	}
 	// after exporting the data, cleaning : removing files (Move action),...
 	protected void exportDone(JComponent c, Transferable t, int action) {
 		this.action = action;
-//		for (int i = 0; i < movedNodes.size(); i++) {
-//				model.removeNodeFromParent(selectedNodes.get(i));
-//				FileUtils.delete((File) selectedNodes.get(i).getUserObject());
-//			}
-//		}
-
 	}
 
 	// create a copy of a nodes list with the same userObjects
@@ -241,7 +213,6 @@ public class JExplorerTransferHandler extends TransferHandler {
 			if (c > 0) {
 				for (int i = 0; i < c; i++) {
 					node.insert(copyNode((DefaultMutableTreeNode) selectedNode.getChildAt(i)), i);
-//					result.add(copyNode((DefaultMutableTreeNode) selectedNode.getChildAt(i)));
 				}
 			}
 			result.add(node);
@@ -308,7 +279,6 @@ public class JExplorerTransferHandler extends TransferHandler {
 		public void actionPerformed(ActionEvent e) {
 			File sourceFile = (File) movedNode.getUserObject();
 			File destinationFile = (File) dropDestination.getUserObject();
-//			model.insertNodeInto(movedNode, dropDestination, nodeIndex);
 			// file
 			try {
 				FileUtils.copy(sourceFile.toPath(), destinationFile.toPath());
