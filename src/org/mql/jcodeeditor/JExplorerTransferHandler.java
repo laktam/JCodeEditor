@@ -49,7 +49,7 @@ public class JExplorerTransferHandler extends TransferHandler {
 		return COPY_OR_MOVE;
 	}
 
-	//create transfered elements data
+	// create transfered elements data
 	@Override
 	protected Transferable createTransferable(JComponent c) {
 		tree = (JTree) c;
@@ -153,32 +153,54 @@ public class JExplorerTransferHandler extends TransferHandler {
 		// insert nodes
 //		if (support.isDrop()) {
 //			if (support.getUserDropAction() == MOVE) {
+		int c = dropDestination.getChildCount();
+		List<String> files = new Vector<String>();
+		for (int destinationChild = 0; destinationChild < c; destinationChild++) {
+			File f=(File) ((DefaultMutableTreeNode) dropDestination.getChildAt(destinationChild)).getUserObject(); 
+			files.add(f.getName());
+		}
 		for (int i = 0; i < movedNodes.length; i++) {
-			model.insertNodeInto(movedNodes[i], dropDestination, i);
+			// check if the file already exist befor adding >||||||||||||||||||||||||||need to add alerts
+			File movedFile =  (File) movedNodes[i].getUserObject();
+				if (!files.contains(movedFile.getName())) {
+					//tree node
+					model.insertNodeInto(movedNodes[i], dropDestination, i);
+					
+					//file
+						try {
+							FileUtils.copy(((File) movedNodes[i].getUserObject()).toPath(),
+									((File) dropDestination.getUserObject()).toPath());
+							FileUtils.updateFilesInNodes(movedNodes[i], dropDestination);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					if (action == MOVE) {
+							model.removeNodeFromParent(selectedNodes.get(i));
+							FileUtils.delete((File) selectedNodes.get(i).getUserObject());
+						
+					} else if (action == COPY) {
+
+					}
+				}
 		}
-	
+
 		// copy files
-		for (DefaultMutableTreeNode selectedNode : movedNodes) {
-			try {
-				FileUtils.copy(((File) selectedNode.getUserObject()).toPath(),
-						((File) dropDestination.getUserObject()).toPath());
-				FileUtils.updateFilesInNodes(selectedNode, dropDestination);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if(action == MOVE) {
-			for (DefaultMutableTreeNode selectedNode : selectedNodes) {
-				model.removeNodeFromParent(selectedNode);
-			}
-			// delete files
-			
-		}else if(action == COPY) {
-			
-		}
+//		for (DefaultMutableTreeNode selectedNode : movedNodes) {
+//			try {
+//				FileUtils.copy(((File) selectedNode.getUserObject()).toPath(),
+//						((File) dropDestination.getUserObject()).toPath());
+//				FileUtils.updateFilesInNodes(selectedNode, dropDestination);
+//			} catch (IOException e) {
+//				e.printStackTrace();
 //			}
-//		}else {
-//			
+//		}
+//		if (action == MOVE) {
+//			for (DefaultMutableTreeNode selectedNode : selectedNodes) {
+//				model.removeNodeFromParent(selectedNode);
+//				FileUtils.delete((File) selectedNode.getUserObject());
+//			}
+//		} else if (action == COPY) {
+//
 //		}
 		return super.importData(support);
 	}
@@ -198,19 +220,19 @@ public class JExplorerTransferHandler extends TransferHandler {
 //				for(DefaultMutableTreeNode selectedNode :selectedNodes) {
 //					model.removeNodeFromParent(selectedNode);
 //				}
-				
-				
+
 //				DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
 //				for (DefaultMutableTreeNode selectedNode : selectedNodes) {
 //					model.removeNodeFromParent(selectedNode);
 //				}
-				// delete source files 
-				
+				// delete source files
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}else if (action == COPY) {
-			this.action = COPY;		}
+		} else if (action == COPY) {
+			this.action = COPY;
+		}
 	}
 
 	// create a copy of a nodes list with the same userObjects
@@ -230,6 +252,7 @@ public class JExplorerTransferHandler extends TransferHandler {
 		}
 		return result;
 	}
+
 	// helper
 	private DefaultMutableTreeNode copyNode(DefaultMutableTreeNode node) {
 		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(node.getUserObject());
