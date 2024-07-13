@@ -1,9 +1,12 @@
 package org.mql.jcodeeditor;
 
+import java.awt.FlowLayout;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +16,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -31,6 +37,7 @@ public class JExplorerTransferHandler extends TransferHandler {
 	private List<DefaultMutableTreeNode> selectedNodes;
 	private List<DefaultMutableTreeNode> movedNodes;
 	private JTree tree;
+	private DefaultTreeModel model;
 	private int action;
 
 	public JExplorerTransferHandler() {
@@ -57,10 +64,6 @@ public class JExplorerTransferHandler extends TransferHandler {
 		if (selectedNodesPaths == null) {
 			return null;
 		}
-
-		// Make up a node array of copies for transfer and
-		// another for/of the nodes that will be removed in
-		// exportDone after a successful drop.
 		selectedNodes = new Vector<DefaultMutableTreeNode>();
 		movedNodes = new ArrayList<DefaultMutableTreeNode>();
 
@@ -69,8 +72,6 @@ public class JExplorerTransferHandler extends TransferHandler {
 
 			selectedNodes.add(selectedNode);
 		}
-		System.out.println("items " + selectedNodes.size());
-
 		// create a copy of selected nodes with there children
 		movedNodes = copyNodes(selectedNodes);
 		System.out.println("movedNodes size " + movedNodes.size());
@@ -94,12 +95,11 @@ public class JExplorerTransferHandler extends TransferHandler {
 
 		// drag and drop
 		if (support.isDrop()) {
-//			return false;
+			action = MOVE;
 			JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
 			DefaultMutableTreeNode transferDestination = (DefaultMutableTreeNode) dl.getPath().getLastPathComponent();
 			if (transferDestination.getUserObject() instanceof File) {
 				if (((File) transferDestination.getUserObject()).isFile()) {
-					System.out.println("trying to drag into a file");
 					return false;
 				}
 				return true;
@@ -117,7 +117,6 @@ public class JExplorerTransferHandler extends TransferHandler {
 				return true;
 			}
 		}
-
 		return super.canImport(support);
 	}
 
@@ -136,8 +135,8 @@ public class JExplorerTransferHandler extends TransferHandler {
 		} catch (java.io.IOException ioe) {
 			System.out.println("I/O error: " + ioe.getMessage());
 		}
-		// Get drop location info.
 
+		// Get drop location info.
 		DefaultMutableTreeNode dropDestination = null;
 		if (support.isDrop()) {
 			JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
@@ -149,39 +148,52 @@ public class JExplorerTransferHandler extends TransferHandler {
 		}
 
 		JTree tree = (JTree) support.getComponent();
-		DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+		model = (DefaultTreeModel) tree.getModel();
 		// insert nodes
-//		if (support.isDrop()) {
-//			if (support.getUserDropAction() == MOVE) {
 		int c = dropDestination.getChildCount();
+		// list of file names in destination
 		List<String> files = new Vector<String>();
 		for (int destinationChild = 0; destinationChild < c; destinationChild++) {
-			File f=(File) ((DefaultMutableTreeNode) dropDestination.getChildAt(destinationChild)).getUserObject(); 
+			File f = (File) ((DefaultMutableTreeNode) dropDestination.getChildAt(destinationChild)).getUserObject();
 			files.add(f.getName());
 		}
 		for (int i = 0; i < movedNodes.length; i++) {
-			// check if the file already exist befor adding >||||||||||||||||||||||||||need to add alerts
-			File movedFile =  (File) movedNodes[i].getUserObject();
-				if (!files.contains(movedFile.getName())) {
-					//tree node
-					model.insertNodeInto(movedNodes[i], dropDestination, i);
-					
-					//file
-						try {
-							FileUtils.copy(((File) movedNodes[i].getUserObject()).toPath(),
-									((File) dropDestination.getUserObject()).toPath());
-							FileUtils.updateFilesInNodes(movedNodes[i], dropDestination);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					if (action == MOVE) {
-							model.removeNodeFromParent(selectedNodes.get(i));
-							FileUtils.delete((File) selectedNodes.get(i).getUserObject());
-						
-					} else if (action == COPY) {
+			File movedFile = (File) movedNodes[i].getUserObject();
 
-					}
+			File sourceFile = (File) movedNodes[i].getUserObject();
+			File destinationFile = (File) dropDestination.getUserObject();
+
+			if (files.contains(movedFile.getName())) {
+				JDialog dialog = new JDialog();
+				dialog.setLayout(new FlowLayout());
+				JLabel question = new JLabel("do you want to replace the existing file ?");
+				JButton yes = new JButton("Yes");
+				yes.addActionListener(new YesDialogButtonAction(model, i, movedNodes[i], dropDestination, dialog));
+				JButton cancel = new JButton("Cancel");
+				cancel.addActionListener(e -> {
+					dialog.dispose();
+				});
+				dialog.add(question);
+				dialog.add(yes);
+				dialog.add(cancel);
+				dialog.pack();
+				dialog.setVisible(true);
+			}
+			if (!files.contains(movedFile.getName())) {
+				// tree node
+				model.insertNodeInto(movedNodes[i], dropDestination, i);
+				// file
+				try {
+					FileUtils.copy(sourceFile.toPath(), destinationFile.toPath());
+					FileUtils.updateFilesInNodes(movedNodes[i], dropDestination);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
+				if (action == MOVE) {
+					model.removeNodeFromParent(selectedNodes.get(i));
+					FileUtils.delete((File) selectedNodes.get(i).getUserObject());
+				}
+			}
 		}
 
 		// copy files
@@ -211,28 +223,13 @@ public class JExplorerTransferHandler extends TransferHandler {
 //	}
 	// after exporting the data, cleaning : removing files (Move action),...
 	protected void exportDone(JComponent c, Transferable t, int action) {
-		if (action == MOVE) {
-			this.action = MOVE;
-			JTree tree = (JTree) c;
-			try {
-//				DefaultMutableTreeNode selectedNodes[] = (DefaultMutableTreeNode[]) t.getTransferData(nodesFlavor);
-				// delete older nodes
-//				for(DefaultMutableTreeNode selectedNode :selectedNodes) {
-//					model.removeNodeFromParent(selectedNode);
-//				}
+		this.action = action;
+//		for (int i = 0; i < movedNodes.size(); i++) {
+//				model.removeNodeFromParent(selectedNodes.get(i));
+//				FileUtils.delete((File) selectedNodes.get(i).getUserObject());
+//			}
+//		}
 
-//				DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-//				for (DefaultMutableTreeNode selectedNode : selectedNodes) {
-//					model.removeNodeFromParent(selectedNode);
-//				}
-				// delete source files
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (action == COPY) {
-			this.action = COPY;
-		}
 	}
 
 	// create a copy of a nodes list with the same userObjects
@@ -289,5 +286,43 @@ public class JExplorerTransferHandler extends TransferHandler {
 		public boolean isDataFlavorSupported(DataFlavor flavor) {
 			return nodesFlavor.equals(flavor);
 		}
+	}
+
+	public class YesDialogButtonAction implements ActionListener {
+		private DefaultTreeModel model;
+		private DefaultMutableTreeNode movedNode;
+		private DefaultMutableTreeNode dropDestination;
+		private int nodeIndex;
+		private JDialog dialog;
+
+		public YesDialogButtonAction(DefaultTreeModel model, int nodeIndex, DefaultMutableTreeNode movedNode,
+				DefaultMutableTreeNode dropDestination, JDialog dialog) {
+			this.model = model;
+			this.movedNode = movedNode;
+			this.dropDestination = dropDestination;
+			this.nodeIndex = nodeIndex;
+			this.dialog = dialog;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			File sourceFile = (File) movedNode.getUserObject();
+			File destinationFile = (File) dropDestination.getUserObject();
+//			model.insertNodeInto(movedNode, dropDestination, nodeIndex);
+			// file
+			try {
+				FileUtils.copy(sourceFile.toPath(), destinationFile.toPath());
+				FileUtils.updateFilesInNodes(movedNode, dropDestination);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+			if (action == MOVE) {
+				System.out.println("action is move");
+				model.removeNodeFromParent(selectedNodes.get(nodeIndex));
+				FileUtils.delete((File) selectedNodes.get(nodeIndex).getUserObject());
+			}
+			dialog.dispose();
+		}
+
 	}
 }
