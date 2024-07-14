@@ -46,11 +46,9 @@ public class JExplorer extends JTree {
 	}
 
 	// add files and folders to explorer JTree
-	public void openFileInExplorer(Path path) {// return DefaultMutableTreeNode
-//		filesMap = new HashMap<DefaultMutableTreeNode, File>();
+	public void openFileInExplorer(Path path) {
 		File file = path.toFile();
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(file);
-//		filesMap.put(root, file);
 
 		if (file.isDirectory()) {
 			File subFiles[] = file.listFiles();
@@ -60,7 +58,6 @@ public class JExplorer extends JTree {
 		}
 		treeModel.setRoot(root);
 		treeModel.reload();
-//		return root;
 	}
 
 	private void add(File file, DefaultMutableTreeNode parent) {

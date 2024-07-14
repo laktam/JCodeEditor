@@ -29,7 +29,7 @@ public class FileMenu extends JMenu {
 				File selectedFile = fileChooser.getSelectedFile();
 //				JOptionPane.showMessageDialog(this, "Selected: " + selectedFile.getAbsolutePath());
 				explorerTree.openFileInExplorer(selectedFile.toPath());
-				new DirectoryWatcher(selectedFile.toPath(), explorerTree).start();
+//				new DirectoryWatcher(selectedFile.toPath(), explorerTree).start();
 				
 			}
 		}

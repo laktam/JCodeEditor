@@ -18,6 +18,8 @@ public class DirectoryWatcher extends Thread{
 		this.explorerTree = explorerTree;
 	}
 	
+	
+	
 	@Override
 	public void run() {
 		try {

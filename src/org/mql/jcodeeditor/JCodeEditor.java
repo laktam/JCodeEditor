@@ -3,16 +3,20 @@ package org.mql.jcodeeditor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -73,9 +77,24 @@ public class JCodeEditor extends JFrame {
 		JPanel explorer = new JPanel(new BorderLayout());
 		explorer.setPreferredSize(new Dimension(200, 600));
 //		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
+		JPanel explorerHeader = new JPanel();
 		JLabel label = new JLabel("Explorer");
 		label.setBorder(new EmptyBorder(8, 10, 8, 10)); // Top, left, bottom, right padding
-		explorer.add(label,  BorderLayout.PAGE_START);
+		explorerHeader.add(label);
+//		// refresh button
+//		JButton refresh = new JButton();
+//		try {
+//		    Image img = ImageIO.read(getClass().getResource("resources/refresh.png"));
+//		    refresh.setIcon(new ImageIcon(img));
+//		    refresh.addActionListener(e->{
+//		    	explorerTree.reloadRoot();
+//		    });
+//		  } catch (Exception ex) {
+//		    System.out.println(ex);
+//		  }
+//		explorerHeader.add(refresh);
+		
+		explorer.add(explorerHeader,  BorderLayout.PAGE_START);
 		
 		createExplorerJTree();
 		JScrollPane scrollPane = new JScrollPane(explorerTree);
