@@ -89,7 +89,6 @@ public class JCodeEditor extends JFrame {
 	}
 	
 	public void createExplorerJTree() {
-//		DefaultMutableTreeNode root = FilesUtiles.openFileInExplorer("D:\\Projects\\Detector\\js");
 //		treeModel = new DefaultTreeModel(root);
 //		explorerTree = new JTree(treeModel);
 		explorerTree = new JExplorer();

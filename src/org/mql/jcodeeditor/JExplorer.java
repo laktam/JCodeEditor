@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class JExplorer extends JTree {
 	public JExplorer() {
 //		treeModel = new DefaultTreeModel(null);
 		treeModel = new OrderedTreeModel(null);
-		openFileInExplorer("");
+		openFileInExplorer(Path.of(""));
 		setModel(treeModel);
 
 		// Enable drag-and-drop
@@ -45,9 +46,9 @@ public class JExplorer extends JTree {
 	}
 
 	// add files and folders to explorer JTree
-	public void openFileInExplorer(String path) {// return DefaultMutableTreeNode
+	public void openFileInExplorer(Path path) {// return DefaultMutableTreeNode
 //		filesMap = new HashMap<DefaultMutableTreeNode, File>();
-		File file = new File(path);
+		File file = path.toFile();
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(file);
 //		filesMap.put(root, file);
 
@@ -74,6 +75,11 @@ public class JExplorer extends JTree {
 			}
 		}
 
+	}
+	
+	public void reloadRoot() {
+		File rootFile = (File) ((DefaultMutableTreeNode) treeModel.getRoot()).getUserObject();
+		openFileInExplorer(rootFile.toPath());
 	}
 
 	// remove a file or directory with children

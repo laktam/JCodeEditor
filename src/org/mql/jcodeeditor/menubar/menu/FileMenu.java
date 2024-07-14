@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.mql.jcodeeditor.JExplorer;
+import org.mql.jcodeeditor.utils.DirectoryWatcher;
 
 public class FileMenu extends JMenu {
 	
@@ -27,7 +28,8 @@ public class FileMenu extends JMenu {
 			if (result == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = fileChooser.getSelectedFile();
 //				JOptionPane.showMessageDialog(this, "Selected: " + selectedFile.getAbsolutePath());
-				explorerTree.openFileInExplorer(selectedFile.getPath());
+				explorerTree.openFileInExplorer(selectedFile.toPath());
+				new DirectoryWatcher(selectedFile.toPath(), explorerTree).start();
 				
 			}
 		}
