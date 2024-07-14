@@ -12,6 +12,7 @@ import org.mql.jcodeeditor.JExplorer;
 public class DirectoryWatcher extends Thread{
 	private Path directoryPath;
 	private JExplorer explorerTree;
+	
 	public DirectoryWatcher(Path directoryPath, JExplorer explorerTree) {
 		this.directoryPath = directoryPath;
 		this.explorerTree = explorerTree;
@@ -20,14 +21,11 @@ public class DirectoryWatcher extends Thread{
 	@Override
 	public void run() {
 		try {
-            // Specify the directory which supposed to be watched
-//            Path directoryPath = Paths.get("./");
  
             // Create a WatchService
             WatchService watchService = FileSystems.getDefault().newWatchService();
  
             // Register the directory for specific events
-            
             directoryPath.register(watchService,
                     StandardWatchEventKinds.ENTRY_CREATE,
                     StandardWatchEventKinds.ENTRY_DELETE,
