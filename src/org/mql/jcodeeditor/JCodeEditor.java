@@ -23,11 +23,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -55,15 +57,19 @@ public class JCodeEditor extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		editor = new JEditor();
 
-		createExplorer();
-		createEditor();
+		JPanel explorer =  createExplorer();
+		JPanel editor = createEditor();
+		JSplitPane splitPane = new JSplitPane(SwingConstants.VERTICAL, explorer, editor);
+//		splitPane.add(explorer);
+//		splitPane.add(editor);
+		add(splitPane);
 		createMenuBar();
 		pack();
 		setVisible(true);
 
 	}
 
-	private void createExplorer() {
+	private JPanel createExplorer() {
 		JPanel explorer = new JPanel(new BorderLayout());
 		explorer.setPreferredSize(new Dimension(200, 600));
 //		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -78,7 +84,8 @@ public class JCodeEditor extends JFrame {
 		explorer.add(scrollPane,  BorderLayout.CENTER);
 //		explorerTree.setPreferredSize(
 //				new Dimension(explorer.getPreferredSize().width - 5, explorer.getPreferredSize().height - 5));
-		add(explorer, BorderLayout.LINE_START);
+		return explorer;
+		//		add(explorer, BorderLayout.LINE_START);
 	}
 	
 	public void createExplorerJTree() {
@@ -93,12 +100,13 @@ public class JCodeEditor extends JFrame {
 		
 	}
 
-	private void createEditor() {
+	private JPanel createEditor() {
 		JPanel editorPanel = new JPanel(new BorderLayout());
 		editorPanel.setPreferredSize(new Dimension(600, 600));
 //		editor.openFile(new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
 		editorPanel.add(editor,  BorderLayout.CENTER);
-		add(editorPanel, BorderLayout.CENTER);
+		return editorPanel;
+//		add(editorPanel, BorderLayout.CENTER);
 	}
 
 	

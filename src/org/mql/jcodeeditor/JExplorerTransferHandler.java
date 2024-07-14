@@ -139,6 +139,7 @@ public class JExplorerTransferHandler extends TransferHandler {
 		// Get drop location info.
 		DefaultMutableTreeNode dropDestination = null;
 		if (support.isDrop()) {
+			action = MOVE;
 			JTree.DropLocation dl = (JTree.DropLocation) support.getDropLocation();
 			TreePath dest = dl.getPath();
 			dropDestination = (DefaultMutableTreeNode) dest.getLastPathComponent();
@@ -195,12 +196,13 @@ public class JExplorerTransferHandler extends TransferHandler {
 				}
 			}
 		}
-
-		return super.importData(support);
+		return true;
+//		return super.importData(support);
 	}
 
 	// after exporting the data, cleaning : removing files (Move action),...
 	protected void exportDone(JComponent c, Transferable t, int action) {
+		System.out.println("export done + " + action);
 		this.action = action;
 	}
 
@@ -278,6 +280,7 @@ public class JExplorerTransferHandler extends TransferHandler {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			File sourceFile = (File) movedNode.getUserObject();
+			
 			File destinationFile = (File) dropDestination.getUserObject();
 			// file
 			try {
