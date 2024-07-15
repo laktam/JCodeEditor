@@ -114,6 +114,11 @@ public class JExplorerTransferHandler extends TransferHandler {
 					System.out.println("trying to drag into a file");
 					return false;
 				}
+				if(selectedNodes.contains(transferDestination)) {
+					// trying to past a node in it self
+					System.out.println("trying to past a node in it self");
+					return false;
+				}
 				return true;
 			}
 		}
