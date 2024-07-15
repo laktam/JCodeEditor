@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
@@ -27,7 +28,8 @@ import javax.swing.KeyStroke;
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 
 public class JEditor extends JTabbedPane{
-	
+	private static File focusedFile;
+	private static JTextArea focusedTextArea;
 	public JEditor() {
 		// TODO Auto-generated constructor stub
 	}
@@ -38,21 +40,6 @@ public class JEditor extends JTabbedPane{
 		textArea.setLineWrap(true); // Enable line wrapping
 		textArea.setWrapStyleWord(true); // Wrap at word boundaries
 		textArea.addKeyListener(new KeyboardSavingListener(textArea, file));
-		
-//		InputMap inputMap = textArea.getInputMap(JComponent.WHEN_FOCUSED);
-//	    ActionMap actionMap = textArea.getActionMap();
-//
-//	    KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK);
-//	    AbstractAction saveAction = new AbstractAction() {
-//	      @Override
-//	      public void actionPerformed(ActionEvent e) {
-//	        System.out.println("Ctrl + S detected!");
-//	        // Perform your save action here.
-//	      }
-//	    };
-//	    inputMap.put(ctrlSKeyStroke, "saveAction");
-//	    actionMap.put("saveAction", saveAction);
-		
 		
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		
@@ -69,7 +56,7 @@ public class JEditor extends JTabbedPane{
 		setSelectedIndex(this.getTabCount() - 1);
 
 	}
-
+	
 	private static String readFile(File file) throws IOException {
 		StringBuilder content = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {

@@ -131,7 +131,7 @@ public class JCodeEditor extends JFrame {
 
 	private void createMenuBar() {
 		menuBar = new JMenuBar();
-		JMenu fileMenu = new FileMenu("File",null, treeModel,explorerTree);
+		JMenu fileMenu = new FileMenu("File", editor, treeModel,explorerTree);
 		menuBar.add(fileMenu);
 		setJMenuBar(menuBar);
 	}

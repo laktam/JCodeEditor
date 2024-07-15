@@ -8,33 +8,20 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultTreeModel;
 
+import org.mql.jcodeeditor.JEditor;
 import org.mql.jcodeeditor.JExplorer;
+import org.mql.jcodeeditor.menubar.OpenItem;
+import org.mql.jcodeeditor.menubar.SaveItem;
 import org.mql.jcodeeditor.utils.DirectoryWatcher;
 
 public class FileMenu extends JMenu {
-	
-	
-	public FileMenu(String title, JFrame jcodeeditor, DefaultTreeModel treeModel, JExplorer explorerTree) {
+
+	public FileMenu(String title, JEditor editor, DefaultTreeModel treeModel,
+			JExplorer explorerTree) {
 		super(title);
-		JMenuItem openItem = new JMenuItem("Open");
-		JMenuItem saveItem = new JMenuItem("Save");
+		JMenuItem openItem = new OpenItem(explorerTree);
+		JMenuItem saveItem = new SaveItem(editor);
 		JMenuItem exitItem = new JMenuItem("Exit");
-		
-		openItem.addActionListener(e -> {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); // Allow both files and directories
-
-			int result = fileChooser.showOpenDialog(null);
-			if (result == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = fileChooser.getSelectedFile();
-//				JOptionPane.showMessageDialog(this, "Selected: " + selectedFile.getAbsolutePath());
-				explorerTree.openFileInExplorer(selectedFile.toPath());
-//				new DirectoryWatcher(selectedFile.toPath(), explorerTree).start();
-				
-			}
-		}
-
-		);
 
 		add(openItem);
 		add(saveItem);
