@@ -20,17 +20,14 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-public class JExplorer extends JTree {
-	private static Map<DefaultMutableTreeNode, File> filesMap;
+public class JExplorer extends JTree {private static final long serialVersionUID = 1L;
 	private static List<File> openFiles = new Vector<File>();
 	private DefaultTreeModel treeModel;
 
 	public JExplorer() {
-//		treeModel = new DefaultTreeModel(null);
 		treeModel = new OrderedTreeModel(null);
 		openFileInExplorer(Path.of(""));
 		setModel(treeModel);
-
 		// Enable drag-and-drop
 		setDragEnabled(true);
 		setDropMode(DropMode.ON_OR_INSERT);
@@ -49,7 +46,6 @@ public class JExplorer extends JTree {
 	public void openFileInExplorer(Path path) {
 		File file = path.toFile();
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(file);
-
 		if (file.isDirectory()) {
 			File subFiles[] = file.listFiles();
 			for (File f : subFiles) {
@@ -63,8 +59,6 @@ public class JExplorer extends JTree {
 	private void add(File file, DefaultMutableTreeNode parent) {
 		DefaultMutableTreeNode fileNode = new DefaultMutableTreeNode(file);
 		parent.add(fileNode);
-//		filesMap.put(fileNode, file);
-
 		if (file.isDirectory()) {
 			File subFiles[] = file.listFiles();
 			for (File f : subFiles) {
@@ -77,20 +71,6 @@ public class JExplorer extends JTree {
 	public void reloadRoot() {
 		File rootFile = (File) ((DefaultMutableTreeNode) treeModel.getRoot()).getUserObject();
 		openFileInExplorer(rootFile.toPath());
-	}
-
-	// remove a file or directory with children
-//	public static void removeFromFileMap(DefaultMutableTreeNode node) {
-//		filesMap.remove(node);
-//		int c = node.getChildCount();
-//		for (int i = 0; i < c; i++) {
-//			removeFromFileMap((DefaultMutableTreeNode) node.getChildAt(i));
-//		}
-//
-//	}
-
-	public static Map<DefaultMutableTreeNode, File> getFilesMap() {
-		return filesMap;
 	}
 
 	public static List<File> getOpenFiles() {
@@ -116,7 +96,6 @@ public class JExplorer extends JTree {
 				expandAll(tree, path, expand);
 			}
 		}
-
 		if (expand) {
 			tree.expandPath(parent);
 		} else {

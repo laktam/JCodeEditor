@@ -46,10 +46,6 @@ import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 import org.mql.jcodeeditor.menubar.menu.FileMenu;
 
 public class JCodeEditor extends JFrame {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JEditor editor;
 	private JExplorer explorerTree;
@@ -60,59 +56,33 @@ public class JCodeEditor extends JFrame {
 		setTitle("JCodeEditor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		editor = new JEditor();
-
 		JPanel explorer =  createExplorer();
 		JPanel editor = createEditor();
 		JSplitPane splitPane = new JSplitPane(SwingConstants.VERTICAL, explorer, editor);
-//		splitPane.add(explorer);
-//		splitPane.add(editor);
 		add(splitPane);
 		createMenuBar();
 		pack();
 		setVisible(true);
-
 	}
 
 	private JPanel createExplorer() {
 		JPanel explorer = new JPanel(new BorderLayout());
 		explorer.setPreferredSize(new Dimension(200, 600));
-//		explorer.setBorder(BorderFactory.createLineBorder(Color.black));
 		JPanel explorerHeader = new JPanel();
 		JLabel label = new JLabel("Explorer");
 		label.setBorder(new EmptyBorder(8, 10, 8, 10)); // Top, left, bottom, right padding
 		explorerHeader.add(label);
-//		// refresh button
-//		JButton refresh = new JButton();
-//		try {
-//		    Image img = ImageIO.read(getClass().getResource("resources/refresh.png"));
-//		    refresh.setIcon(new ImageIcon(img));
-//		    refresh.addActionListener(e->{
-//		    	explorerTree.reloadRoot();
-//		    });
-//		  } catch (Exception ex) {
-//		    System.out.println(ex);
-//		  }
-//		explorerHeader.add(refresh);
-		
 		explorer.add(explorerHeader,  BorderLayout.PAGE_START);
-		
 		createExplorerJTree();
 		JScrollPane scrollPane = new JScrollPane(explorerTree);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		explorer.add(scrollPane,  BorderLayout.CENTER);
-//		explorerTree.setPreferredSize(
-//				new Dimension(explorer.getPreferredSize().width - 5, explorer.getPreferredSize().height - 5));
 		return explorer;
-		//		add(explorer, BorderLayout.LINE_START);
 	}
 	
 	public void createExplorerJTree() {
-//		treeModel = new DefaultTreeModel(root);
-//		explorerTree = new JTree(treeModel);
 		explorerTree = new JExplorer();
-//		
-//		explorerTree.openFileInExplorer();
 		explorerTree.setCellRenderer(new CustomTreeCellRenderer());
 		explorerTree.addMouseListener(new DoubleClickListener(explorerTree, editor));
 		
@@ -121,10 +91,8 @@ public class JCodeEditor extends JFrame {
 	private JPanel createEditor() {
 		JPanel editorPanel = new JPanel(new BorderLayout());
 		editorPanel.setPreferredSize(new Dimension(600, 600));
-//		editor.openFile(new File("C:\\Users\\laktam\\Desktop\\ideas.txt"));
 		editorPanel.add(editor,  BorderLayout.CENTER);
 		return editorPanel;
-//		add(editorPanel, BorderLayout.CENTER);
 	}
 
 	

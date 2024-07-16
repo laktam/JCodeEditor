@@ -12,6 +12,7 @@ import org.mql.jcodeeditor.JExplorer;
 
 public class FileUtils {
 
+	// not used, we just copy and if it is a drag or past we delete the source.
 	public static void moveFileOrDirectory(Path source, Path target) throws IOException {
 		if (Files.isDirectory(source)) {
 			Path createdFolder = Files.createDirectories(target.resolve(source.getFileName()));

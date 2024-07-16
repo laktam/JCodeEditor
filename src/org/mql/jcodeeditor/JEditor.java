@@ -31,7 +31,6 @@ public class JEditor extends JTabbedPane{
 	private static File focusedFile;
 	private static JTextArea focusedTextArea;
 	public JEditor() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public  void openFile( File file) {
@@ -40,9 +39,7 @@ public class JEditor extends JTabbedPane{
 		textArea.setLineWrap(true); // Enable line wrapping
 		textArea.setWrapStyleWord(true); // Wrap at word boundaries
 		textArea.addKeyListener(new KeyboardSavingListener(textArea, file));
-		
-		JScrollPane scrollPane = new JScrollPane(textArea);
-		
+		JScrollPane scrollPane = new JScrollPane(textArea);		
 		// read file
 		String content = "";
 		try {
@@ -51,7 +48,6 @@ public class JEditor extends JTabbedPane{
 			e.printStackTrace();
 		}
 		textArea.setText(content);
-
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
 
@@ -77,10 +73,8 @@ public class JEditor extends JTabbedPane{
 	private JComponent createTabComponent(JPanel panel, String title) {
 		JPanel tabComponent = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		tabComponent.setOpaque(false);
-
 		JLabel label = new JLabel(title);
 		tabComponent.add(label);
-
 		JButton closeButton = new JButton("x");
 		closeButton.setPreferredSize(new Dimension(13, 13));
 		closeButton.setMargin(new Insets(0, 0, 0, 0));
@@ -95,7 +89,6 @@ public class JEditor extends JTabbedPane{
 			}
 		});
 		tabComponent.add(closeButton);
-
 		return tabComponent;
 	}
 }

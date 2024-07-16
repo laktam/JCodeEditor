@@ -13,10 +13,6 @@ import java.util.List;
 import java.util.Vector;
 
 public class OrderedTreeModel extends DefaultTreeModel {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public OrderedTreeModel(TreeNode root) {
@@ -59,8 +55,6 @@ public class OrderedTreeModel extends DefaultTreeModel {
 				} else {
 					return f1.getName().compareTo(f2.getName());
 				}
-//            	if()
-//                return o1.toString().compareTo(o2.toString()); // Customize this comparator as needed
 			}
 		});
 		System.out.println(children);
