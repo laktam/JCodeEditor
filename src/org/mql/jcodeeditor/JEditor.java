@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -23,23 +25,30 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
+import javax.swing.text.DefaultStyledDocument;
 
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 
 public class JEditor extends JTabbedPane{
 	private static File focusedFile;
 	private static JTextArea focusedTextArea;
+	private static List<JTextPane> textPanes;
 	public JEditor() {
+		textPanes = new Vector<JTextPane>();
 	}
 
 	public  void openFile( File file) {
 		addClosableTab(file.getName());
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true); // Enable line wrapping
-		textArea.setWrapStyleWord(true); // Wrap at word boundaries
-		textArea.addKeyListener(new KeyboardSavingListener(textArea, file));
-		JScrollPane scrollPane = new JScrollPane(textArea);		
+//		JTextArea textArea = new JTextArea();
+//		textArea.setLineWrap(true); // Enable line wrapping
+//		textArea.setWrapStyleWord(true); // Wrap at word boundaries
+//		textArea.addKeyListener(new KeyboardSavingListener(textArea, file));
+		DefaultStyledDocument document = new DefaultStyledDocument();
+		JTextPane textPane = new JTextPane(document);
+		textPanes.add(textPane);
+		JScrollPane scrollPane = new JScrollPane(textPane);		
 		// read file
 		String content = "";
 		try {
@@ -47,7 +56,7 @@ public class JEditor extends JTabbedPane{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		textArea.setText(content);
+		textPane.setText(content);
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
 
