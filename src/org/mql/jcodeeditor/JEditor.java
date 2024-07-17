@@ -30,6 +30,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultStyledDocument;
 
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
+import org.mql.jcodeeditor.utils.Styles;
 
 public class JEditor extends JTabbedPane{
 	private static File focusedFile;
@@ -57,6 +58,7 @@ public class JEditor extends JTabbedPane{
 			e.printStackTrace();
 		}
 		textPane.setText(content);
+		Styles.setHTMLStyle(textPane);
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
 
