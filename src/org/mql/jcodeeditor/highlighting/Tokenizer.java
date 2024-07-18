@@ -25,7 +25,7 @@ public class Tokenizer {
 		while (matcher.find()) {
 			String value = matcher.group();
 			TokenType type = determineTokenType(value);
-			tokens.add(new Token(type, value));
+			tokens.add(new Token(type, value, matcher.start(), value.length()));
 		}
 
 		return tokens;
