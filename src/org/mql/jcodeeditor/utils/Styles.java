@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class Styles {
 	public static void setHTMLStyle(JTextPane textPane) {
 		Style style = textPane.addStyle("BoldRed", null);
-
+		
 		StyleConstants.setBold(style, true);
 		StyleConstants.setForeground(style, Color.RED);
 		StyledDocument doc = textPane.getStyledDocument();
@@ -29,13 +29,17 @@ public class Styles {
 		StyleConstants.setBold(keywordStyle, true);
 
 		// Compile the pattern
-		Pattern pattern = Pattern.compile("\\b(public|class|static|void)\\b");
+//		Pattern pattern = Pattern.compile("\\b(public|class|static|void)\\b");
+		Pattern keywordPattern = Pattern.compile("\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b") ;
+//		Pattern keywordPattern = Pattern.compile("\\b(abstract|assert|break|case|catch|class|const|continue|default|do|else|enum|extends|final|finally|for|goto|if|implements|import|instanceof|interface|native|new|null|package|private|protected|public|return|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|volatile|while)\\b");
 
 		// Create the matcher
-		Matcher matcher = pattern.matcher(content);
+		Matcher matcher = keywordPattern.matcher(content);
 		while (matcher.find()) {
 			doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), keywordStyle, false);
 		}
+		
+		
 //     Stream<MatchResult> results=   matcher.results();
 
 //		String[] keywords = { "public", "class", "static", "void" };
@@ -47,12 +51,12 @@ public class Styles {
 //			}
 //		}
 
-		try {
-			// Insert styled text
-			doc.insertString(doc.getLength(), "Hello, ", null);
-			doc.insertString(doc.getLength(), "world!", style);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			// Insert styled text
+//			doc.insertString(doc.getLength(), "Hello, ", null);
+//			doc.insertString(doc.getLength(), "world!", style);
+//		} catch (BadLocationException e) {
+//			e.printStackTrace();
+//		}
 	}
 }
