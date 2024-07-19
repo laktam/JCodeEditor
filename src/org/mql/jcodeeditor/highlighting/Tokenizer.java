@@ -1,7 +1,9 @@
 package org.mql.jcodeeditor.highlighting;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,13 +12,14 @@ public class Tokenizer {
 	private static final Pattern TOKEN_PATTERN = Pattern.compile(
 			"\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b|"
 					+ // keywords
-					"[a-zA-Z_]\\w*|" + // identifiers
+					"\\b\\w+\\s*=|" + // identifiers
 					"\"[^\"]*\"|" + // strings
 					"\\d+|" + // numbers
 					"//.*|" + // comments
 					"[+\\-*/=<>]|" + // operators
 					"\\s+" // whitespace
 	);
+	private static final Set<String> identifiers  = new HashSet<String>();
 
 	public static List<Token> tokenize(String code) {
 		List<Token> tokens = new ArrayList<>();
@@ -43,9 +46,12 @@ public class Tokenizer {
 			return TokenType.COMMENT;
 		if (value.matches("[+\\-*/=<>]"))
 			return TokenType.OPERATOR;
+		if (value.matches("\\b\\w+\\s*="))
+			return TokenType.IDENTIFIER;
 		if (value.trim().isEmpty())
 			return TokenType.WHITESPACE;
-		return TokenType.IDENTIFIER;
+		
+		return TokenType.OTHER;
 	}
 
 	private static boolean isKeyword(String value) {

@@ -36,6 +36,10 @@ public class Styles {
 		Style boldRed = doc.addStyle("BoldRed", defaultStyle);
 		StyleConstants.setForeground(boldRed, Color.RED);
 		StyleConstants.setBold(boldRed, true);
+		
+		Style identifierStyle = doc.addStyle("Identifier", defaultStyle);
+		StyleConstants.setForeground(identifierStyle, Color.GREEN);
+		StyleConstants.setBold(identifierStyle, true);
 
 		// Compile the pattern
 //		Pattern pattern = Pattern.compile("\\b(public|class|static|void)\\b");
@@ -56,6 +60,10 @@ public class Styles {
 			if(token.getType().equals(TokenType.NUMBER)) {
 				doc.setCharacterAttributes(token.getStart(), token.getSize(), boldRed, false);
 			}
+			if(token.getType().equals(TokenType.IDENTIFIER)) {
+				doc.setCharacterAttributes(token.getStart(), token.getSize(), identifierStyle, false);
+			}
+			
 			
 		}
 
