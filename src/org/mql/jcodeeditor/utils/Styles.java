@@ -38,7 +38,7 @@ public class Styles {
 		StyleConstants.setBold(boldRed, true);
 		
 		Style identifierStyle = doc.addStyle("Identifier", defaultStyle);
-		StyleConstants.setForeground(identifierStyle, Color.GREEN);
+		StyleConstants.setForeground(identifierStyle, Color.ORANGE);
 		StyleConstants.setBold(identifierStyle, true);
 
 		// Compile the pattern

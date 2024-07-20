@@ -12,9 +12,9 @@ public class Tokenizer {
 	private static final Pattern TOKEN_PATTERN = Pattern.compile(
 			"\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b|"
 					+ // keywords
-					"\\b\\w+\\s*=|" + // identifiers
+					"\\b[a-zA-Z_]\\w*\\b(?=\\s*=)|" +//"\\b[a-zA-Z_]\\w*(?=\\s*=)|" + // identifiers with  lookahead assertion
 					"\"[^\"]*\"|" + // strings
-					"\\d+|" + // numbers
+					"\\b\\d+\\b|" + // numbers
 					"//.*|" + // comments
 					"[+\\-*/=<>]|" + // operators
 					"\\s+" // whitespace
@@ -38,16 +38,19 @@ public class Tokenizer {
 		// order is important !!!
 		if (isKeyword(value))
 			return TokenType.KEYWORD;
+		if (value.matches("\\b[a-zA-Z_]\\w*\\b")) {
+			System.out.println(value);
+			return TokenType.IDENTIFIER;
+		}
 		if (value.matches("\".*\""))
 			return TokenType.STRING;
-		if (value.matches("\\d+"))
+		if (value.matches("\\b\\d+\\b"))
 			return TokenType.NUMBER;
 		if (value.startsWith("//"))
 			return TokenType.COMMENT;
 		if (value.matches("[+\\-*/=<>]"))
 			return TokenType.OPERATOR;
-		if (value.matches("\\b\\w+\\s*="))
-			return TokenType.IDENTIFIER;
+		
 		if (value.trim().isEmpty())
 			return TokenType.WHITESPACE;
 		
