@@ -51,8 +51,8 @@ public class Styles {
 //		while (matcher.find()) {
 //			doc.setCharacterAttributes(matcher.start(), matcher.end() - matcher.start(), keywordStyle, false);
 //		}
-
-		List<Token> tokens = Tokenizer.tokenize(content);
+		Tokenizer tokenizer = new Tokenizer();
+		List<Token> tokens = tokenizer.tokenize(content);
 		for (Token token : tokens) {
 			if(token.getType().equals(TokenType.KEYWORD)) {
 				doc.setCharacterAttributes(token.getStart(), token.getSize(), keywordStyle, false);

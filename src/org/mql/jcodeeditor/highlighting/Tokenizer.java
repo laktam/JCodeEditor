@@ -8,22 +8,60 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tokenizer {
-	private static final String KEYWORDS = "\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b";
-	private static final Pattern TOKEN_PATTERN = Pattern.compile(
-			"\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b|"
-					+ // keywords
-					"\\b[a-zA-Z_]\\w*\\b(?=\\s*=)|" +//"\\b[a-zA-Z_]\\w*(?=\\s*=)|" + // identifiers with  lookahead assertion
-					"\"[^\"]*\"|" + // strings
-					"\\b\\d+\\b|" + // numbers
-					"//.*|" + // comments
-					"[+\\-*/=<>]|" + // operators
-					"\\s+" // whitespace
-	);
-	private static final Set<String> identifiers  = new HashSet<String>();
+	private String keywordsRegEx;
+	private String commentsRegEx;
+	private String identifierRegEx;
+	private String stringRegEx;
+	private Set<String> identifiers;
 
-	public static List<Token> tokenize(String code) {
+	private Pattern tokenPattern;
+
+	public Tokenizer() {
+		// use java by default
+		keywordsRegEx = "\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b";
+		commentsRegEx = "//.*";
+		identifiers = new HashSet<String>();
+		identifierRegEx = "\\b[a-zA-Z_]\\w*\\b";
+		stringRegEx = "\"[^\"]*\"";
+		
+		tokenPattern = Pattern.compile(keywordsRegEx + "|" +
+				identifierRegEx +"(?=\\s*=)" + "|" +  // to find identifiers before "="
+				identifierRegEx + "|" + // should detect here occurences of identifiers
+				stringRegEx + "|" +
+				"\\b\\d+\\b|" + // numbers
+				commentsRegEx + "|" + // comments
+				"[+\\-*/=<>]|" + // operators
+				"\\s+" // whitespace
+		);
+	}
+
+	
+
+	public Tokenizer(String keywordsRegEx, String identifierRegEx) {
+		super();
+		this.keywordsRegEx = keywordsRegEx;
+		this.identifierRegEx = identifierRegEx;
+	}
+
+
+
+
+
+	public Tokenizer(String keywordsRegEx, String commentsRegEx, String identifierRegEx, String stringRegEx) {
+		super();
+		this.keywordsRegEx = keywordsRegEx;
+		this.commentsRegEx = commentsRegEx;
+		this.identifierRegEx = identifierRegEx;
+		this.stringRegEx = stringRegEx;
+	}
+
+
+
+	public List<Token> tokenize(String code) {
+		// detect identifiers
+		getIdentifiers(code);
 		List<Token> tokens = new ArrayList<>();
-		Matcher matcher = TOKEN_PATTERN.matcher(code);
+		Matcher matcher = tokenPattern.matcher(code);
 
 		while (matcher.find()) {
 			String value = matcher.group();
@@ -34,14 +72,21 @@ public class Tokenizer {
 		return tokens;
 	}
 
-	private static TokenType determineTokenType(String value) {
+	private void getIdentifiers(String code) {
+		Pattern p = Pattern.compile(identifierRegEx +"(?=\\s*=)");
+		Matcher matcher = p.matcher(code);
+
+		while (matcher.find()) {
+			identifiers.add(matcher.group());
+		}
+	}
+
+	private TokenType determineTokenType(String value) {
 		// order is important !!!
 		if (isKeyword(value))
 			return TokenType.KEYWORD;
-		if (value.matches("\\b[a-zA-Z_]\\w*\\b")) {
-			System.out.println(value);
+		if (isIdentifier(value))
 			return TokenType.IDENTIFIER;
-		}
 		if (value.matches("\".*\""))
 			return TokenType.STRING;
 		if (value.matches("\\b\\d+\\b"))
@@ -50,16 +95,26 @@ public class Tokenizer {
 			return TokenType.COMMENT;
 		if (value.matches("[+\\-*/=<>]"))
 			return TokenType.OPERATOR;
-		
+
 		if (value.trim().isEmpty())
 			return TokenType.WHITESPACE;
-		
+
 		return TokenType.OTHER;
 	}
 
-	private static boolean isKeyword(String value) {
+	private boolean isKeyword(String value) {
 //		Pattern keywordsPattern = Pattern.compile(KEYWORDS);
 //		Matcher matcher = keywordsPattern.matcher(value);
-		return value.matches(KEYWORDS);
+		return value.matches(keywordsRegEx);
+	}
+
+	private boolean isIdentifier(String value) {
+//		if (value.matches("\\b[a-zA-Z_]\\w*\\b(?=\\s*=)")) {// "\\b[a-zA-Z_]\\w*\\b"
+//			identifiers.add(value);
+//			return true;
+//		}
+		if (identifiers.contains(value))
+			return true;
+		return false;
 	}
 }
