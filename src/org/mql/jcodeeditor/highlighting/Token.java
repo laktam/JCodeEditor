@@ -38,4 +38,9 @@ public class Token {
     public int getStart() {
 		return start;
 	}
+    
+    @Override
+    public String toString() {
+    	return "" + value + " : " + type;
+    }
 }

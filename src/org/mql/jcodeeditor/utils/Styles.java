@@ -28,7 +28,7 @@ public class Styles {
 	private static Style keywordStyle;
 	private static Style numbersStyle;
 	private static Style identifierStyle;
-	
+	private static Style defaultStyle;
 	public static void setDocument(StyledDocument document) {
 		doc = document;
 	}
@@ -38,7 +38,12 @@ public class Styles {
 	}
 	
 	public static void highlight() {
-		Style defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+		
+		 defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+		
+//		blackStyle = doc.addStyle("blackStyle", defaultStyle);
+//		StyleConstants.setForeground(blackStyle, Color.BLACK);
+
 		keywordStyle = doc.addStyle("KeywordStyle", defaultStyle);
 		StyleConstants.setForeground(keywordStyle, Color.BLUE);
 		StyleConstants.setBold(keywordStyle, true);
@@ -59,21 +64,24 @@ public class Styles {
 		String code = "";
 		try {
 			code = doc.getText(0,doc.getLength());
-			System.out.println(code);
+//			System.out.println(code);
 
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
+		// set to default
+		doc.setCharacterAttributes(0, doc.getLength(), defaultStyle, true);
 		List<Token> tokens = tokenizer.tokenize(code);
+		System.out.println(tokens);
 		for (Token token : tokens) {
 			if(token.getType().equals(TokenType.KEYWORD)) {
-				doc.setCharacterAttributes(token.getStart(), token.getSize(), keywordStyle, false);
+				doc.setCharacterAttributes(token.getStart(), token.getSize(), keywordStyle, true);
 			}
 			if(token.getType().equals(TokenType.NUMBER)) {
-				doc.setCharacterAttributes(token.getStart(), token.getSize(), numbersStyle, false);
+				doc.setCharacterAttributes(token.getStart(), token.getSize(), numbersStyle, true);
 			}
 			if(token.getType().equals(TokenType.IDENTIFIER)) {
-				doc.setCharacterAttributes(token.getStart(), token.getSize(), identifierStyle, false);
+				doc.setCharacterAttributes(token.getStart(), token.getSize(), identifierStyle, true);
 			}	
 		}
 	}

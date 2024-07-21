@@ -20,7 +20,6 @@ public class Tokenizer {
 		// use java by default
 		keywordsRegEx = "\\b(abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while)\\b";
 		commentsRegEx = "//.*";
-		identifiers = new HashSet<String>();
 		identifierRegEx = "\\b[a-zA-Z_]\\w*\\b";
 		stringRegEx = "\"[^\"]*\"";
 		
@@ -58,6 +57,7 @@ public class Tokenizer {
 
 
 	public List<Token> tokenize(String code) {
+		identifiers = new HashSet<String>();
 		// detect identifiers
 		getIdentifiers(code);
 		List<Token> tokens = new ArrayList<>();
