@@ -26,7 +26,7 @@ public class Tokenizer {
 		
 		tokenPattern = Pattern.compile(keywordsRegEx + "|" +
 				identifierRegEx +"(?=\\s*=)" + "|" +  // to find identifiers before "="
-				identifierRegEx + "|" + // should detect here occurences of identifiers
+				identifierRegEx + "|" + // should detect here occurrences of identifiers
 				stringRegEx + "|" +
 				"\\b\\d+\\b|" + // numbers
 				commentsRegEx + "|" + // comments
