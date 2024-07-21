@@ -29,6 +29,8 @@ public class Styles {
 	private static Style numbersStyle;
 	private static Style identifierStyle;
 	private static Style defaultStyle;
+	private static Style commentsStyle;
+	
 	public static void setDocument(StyledDocument document) {
 		doc = document;
 	}
@@ -39,11 +41,8 @@ public class Styles {
 	
 	public static void highlight() {
 		
-		 defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+		defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
 		
-//		blackStyle = doc.addStyle("blackStyle", defaultStyle);
-//		StyleConstants.setForeground(blackStyle, Color.BLACK);
-
 		keywordStyle = doc.addStyle("KeywordStyle", defaultStyle);
 		StyleConstants.setForeground(keywordStyle, Color.BLUE);
 		StyleConstants.setBold(keywordStyle, true);
@@ -56,6 +55,10 @@ public class Styles {
 		identifierStyle = doc.addStyle("Identifier", defaultStyle);
 		StyleConstants.setForeground(identifierStyle, Color.ORANGE);
 		StyleConstants.setBold(identifierStyle, true);
+		
+		commentsStyle = doc.addStyle("CommentsStyle", defaultStyle);
+		StyleConstants.setForeground(commentsStyle, new Color(0, 100, 0));
+		
 		applyStyles();
 		doc.addDocumentListener(new DocumentChangeListener());
 	}
@@ -64,8 +67,6 @@ public class Styles {
 		String code = "";
 		try {
 			code = doc.getText(0,doc.getLength());
-//			System.out.println(code);
-
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -83,6 +84,9 @@ public class Styles {
 			if(token.getType().equals(TokenType.IDENTIFIER)) {
 				doc.setCharacterAttributes(token.getStart(), token.getSize(), identifierStyle, true);
 			}	
+			if(token.getType().equals(TokenType.COMMENT)) {
+				doc.setCharacterAttributes(token.getStart(), token.getSize(), commentsStyle, true);
+			}
 		}
 	}
 }
