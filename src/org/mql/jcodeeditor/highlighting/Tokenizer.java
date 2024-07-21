@@ -83,19 +83,18 @@ public class Tokenizer {
 
 	private TokenType determineTokenType(String value) {
 		// order is important !!!
+		if (value.startsWith("//"))
+			return TokenType.COMMENT;
+		if (value.matches("\".*\""))
+			return TokenType.STRING;
 		if (isKeyword(value))
 			return TokenType.KEYWORD;
 		if (isIdentifier(value))
 			return TokenType.IDENTIFIER;
-		if (value.matches("\".*\""))
-			return TokenType.STRING;
 		if (value.matches("\\b\\d+\\b"))
 			return TokenType.NUMBER;
-		if (value.startsWith("//"))
-			return TokenType.COMMENT;
 		if (value.matches("[+\\-*/=<>]"))
 			return TokenType.OPERATOR;
-
 		if (value.trim().isEmpty())
 			return TokenType.WHITESPACE;
 
