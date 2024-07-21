@@ -2,9 +2,6 @@ package org.mql.jcodeeditor.utils;
 
 import java.awt.Color;
 
-import javax.swing.JTextPane;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -17,75 +14,85 @@ import org.mql.jcodeeditor.highlighting.TokenType;
 import org.mql.jcodeeditor.highlighting.Tokenizer;
 
 import java.util.List;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class Styles {
 	private static StyledDocument doc;
 	private static Tokenizer tokenizer;
 	private static Style keywordStyle;
-	private static Style numbersStyle;
+	private static Style numberStyle;
 	private static Style identifierStyle;
 	private static Style defaultStyle;
-	private static Style commentsStyle;
-	
+	private static Style commentStyle;
+	private static Style stringStyle;
+
+	private static Color commentColor = new Color(63, 127, 95);
+	private static Color identifierColor = new Color(143, 86, 4) ;
+	private static Color stringColor = new Color(42, 0, 255);
+	private static Color keywordColor = new Color(127, 0, 85);
+	private static Color numberColor = new Color(127, 0, 85);
+
+
+	private static void setColors(Color comment, Color identifier, Color string, Color keyword) {
+		commentColor = comment;
+		identifierColor = identifier;
+		stringColor = string;
+		keywordColor = keyword;
+	}
+
+	// setter for styles
+
 	public static void setDocument(StyledDocument document) {
 		doc = document;
+		defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+
+		keywordStyle = doc.addStyle("KeywordStyle", defaultStyle);
+		StyleConstants.setForeground(keywordStyle, keywordColor);
+		StyleConstants.setBold(keywordStyle, true);
+
+		numberStyle = doc.addStyle("NumbersStyle", defaultStyle);
+		StyleConstants.setForeground(numberStyle, numberColor);
+
+		identifierStyle = doc.addStyle("Identifier", defaultStyle);
+		StyleConstants.setForeground(identifierStyle, identifierColor);
+
+		commentStyle = doc.addStyle("CommentsStyle", defaultStyle);
+		StyleConstants.setForeground(commentStyle, commentColor);
+
+		stringStyle = doc.addStyle("stringStyle", defaultStyle);
+		StyleConstants.setForeground(stringStyle, stringColor);
 	}
-	
+
 	public static void setTokenizer(Tokenizer t) {
 		tokenizer = t;
 	}
-	
+
 	public static void highlight() {
-		
-		defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-		
-		keywordStyle = doc.addStyle("KeywordStyle", defaultStyle);
-		StyleConstants.setForeground(keywordStyle, Color.BLUE);
-		StyleConstants.setBold(keywordStyle, true);
-		
-		
-		numbersStyle = doc.addStyle("NumbersStyle", defaultStyle);
-		StyleConstants.setForeground(numbersStyle, Color.RED);
-		StyleConstants.setBold(numbersStyle, true);
-		
-		identifierStyle = doc.addStyle("Identifier", defaultStyle);
-		StyleConstants.setForeground(identifierStyle, Color.ORANGE);
-		StyleConstants.setBold(identifierStyle, true);
-		
-		commentsStyle = doc.addStyle("CommentsStyle", defaultStyle);
-		StyleConstants.setForeground(commentsStyle, new Color(0, 100, 0));
-		
 		applyStyles();
 		doc.addDocumentListener(new DocumentChangeListener());
 	}
-	
+
 	public static void applyStyles() {
 		String code = "";
 		try {
-			code = doc.getText(0,doc.getLength());
+			code = doc.getText(0, doc.getLength());
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
-		// set to default
 		doc.setCharacterAttributes(0, doc.getLength(), defaultStyle, true);
 		List<Token> tokens = tokenizer.tokenize(code);
 		System.out.println(tokens);
 		for (Token token : tokens) {
-			if(token.getType().equals(TokenType.KEYWORD)) {
+			if (token.getType().equals(TokenType.KEYWORD)) {
 				doc.setCharacterAttributes(token.getStart(), token.getSize(), keywordStyle, true);
 			}
-			if(token.getType().equals(TokenType.NUMBER)) {
-				doc.setCharacterAttributes(token.getStart(), token.getSize(), numbersStyle, true);
-			}
-			if(token.getType().equals(TokenType.IDENTIFIER)) {
+			if (token.getType().equals(TokenType.IDENTIFIER)) {
 				doc.setCharacterAttributes(token.getStart(), token.getSize(), identifierStyle, true);
-			}	
-			if(token.getType().equals(TokenType.COMMENT)) {
-				doc.setCharacterAttributes(token.getStart(), token.getSize(), commentsStyle, true);
+			}
+			if (token.getType().equals(TokenType.COMMENT)) {
+				doc.setCharacterAttributes(token.getStart(), token.getSize(), commentStyle, true);
+			}
+			if (token.getType().equals(TokenType.STRING)) {
+				doc.setCharacterAttributes(token.getStart(), token.getSize(), stringStyle, true);
 			}
 		}
 	}
