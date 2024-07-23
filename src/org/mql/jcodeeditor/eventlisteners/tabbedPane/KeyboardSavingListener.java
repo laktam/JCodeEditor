@@ -8,14 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 public class KeyboardSavingListener extends KeyAdapter {
-	private JTextArea textArea;
+	private JTextPane textPane;
 	private File file;
 	private boolean isCtrlPressed = false;
 
-	public KeyboardSavingListener(JTextArea textArea, File file) {
-		this.textArea = textArea;
+	public KeyboardSavingListener(JTextPane textArea, File file) {
+		this.textPane = textArea;
 		this.file = file;
 	}
 
@@ -30,7 +31,7 @@ public class KeyboardSavingListener extends KeyAdapter {
 			System.out.println("Ctrl + S detected!");
 			try {
 				BufferedWriter f_writer = new BufferedWriter(new FileWriter(file));
-				f_writer.write(textArea.getText());
+				f_writer.write(textPane.getText());
 				f_writer.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block

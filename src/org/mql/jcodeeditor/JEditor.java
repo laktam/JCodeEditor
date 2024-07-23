@@ -49,6 +49,7 @@ public class JEditor extends JTabbedPane{
 //		textArea.addKeyListener(new KeyboardSavingListener(textArea, file));
 		DefaultStyledDocument document = new DefaultStyledDocument();
 		JTextPane textPane = new JTextPane(document);
+		textPane.addKeyListener(new KeyboardSavingListener(textPane, file));
 		textPanes.add(textPane);
 		JScrollPane scrollPane = new JScrollPane(textPane);		
 		// read file
