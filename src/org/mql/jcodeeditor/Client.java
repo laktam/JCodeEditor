@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.mql.jcodeeditor.grammars.java.Java20Lexer;
 import org.mql.jcodeeditor.grammars.java.Java20Parser;
 
@@ -34,5 +35,11 @@ public class Client {
         ParseTree tree = parser.compilationUnit();
         // Print the parse tree (for debugging)
         System.out.println(tree.toStringTree(parser));
+        
+        for (Token token : lexer.getAllTokens()) {
+        	System.out.println(token.getType());
+        	System.out.println(token.getText());
+        	
+        }
 	}
 }
