@@ -43,10 +43,6 @@ public class JEditor extends JTabbedPane{
 
 	public  void openFile( File file) {
 		addClosableTab(file.getName());
-//		JTextArea textArea = new JTextArea();
-//		textArea.setLineWrap(true); // Enable line wrapping
-//		textArea.setWrapStyleWord(true); // Wrap at word boundaries
-//		textArea.addKeyListener(new KeyboardSavingListener(textArea, file));
 		DefaultStyledDocument document = new DefaultStyledDocument();
 		JTextPane textPane = new JTextPane(document);
 		textPane.addKeyListener(new KeyboardSavingListener(textPane, file));
@@ -60,6 +56,8 @@ public class JEditor extends JTabbedPane{
 			e.printStackTrace();
 		}
 		textPane.setText(content);
+		
+		//here i should use the extensions if they offer a highlighter for this file type
 		Styles.setDocument(document);
 		Styles.setTokenizer(new Tokenizer());
 		Styles.highlight();

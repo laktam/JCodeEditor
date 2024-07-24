@@ -4,14 +4,6 @@ import java.awt.Color;
 
 import javax.swing.UIManager;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
-import org.mql.jcodeeditor.grammars.java.Java20Lexer;
-import org.mql.jcodeeditor.grammars.java.Java20Parser;
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class Client {
