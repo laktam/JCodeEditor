@@ -80,7 +80,6 @@ public class Styles {
 		}
 		doc.setCharacterAttributes(0, doc.getLength(), defaultStyle, true);
 		List<Token> tokens = tokenizer.tokenize(code);
-		System.out.println(tokens);
 		for (Token token : tokens) {
 			if (token.getType().equals(TokenType.KEYWORD)) {
 				doc.setCharacterAttributes(token.getStart(), token.getSize(), keywordStyle, true);
