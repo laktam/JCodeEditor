@@ -3,9 +3,6 @@ package org.mql.jcodeeditor;
 import java.awt.Color;
 
 import javax.swing.UIManager;
-
-import org.mql.jcodeeditor.JCodeEditor;
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class Client {

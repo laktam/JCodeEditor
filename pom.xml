@@ -30,6 +30,14 @@
 			<version>5.1.9</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.eclipse.equinox/common -->
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>common</artifactId>
+			<version>3.6.200-v20130402-1505</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -43,7 +51,9 @@
 						<Bundle-Name>JCodeEditor</Bundle-Name>
 						<Bundle-SymbolicName>mql.java.laktam.JCodeEditor</Bundle-SymbolicName>
 						<Bundle-Version>1.0.0</Bundle-Version>
-						<Import-Package>*</Import-Package>
+						<Import-Package> *;resolution:=optional</Import-Package>
+						<Export-Package></Export-Package>
+						<Bundle-Activator>org.mql.jcodeeditor.Activator</Bundle-Activator>
 					</instructions>
 				</configuration>
 			</plugin>
