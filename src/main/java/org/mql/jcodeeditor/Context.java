@@ -1,20 +1,14 @@
 package org.mql.jcodeeditor;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLClassLoader;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.mql.jcodeeditor.highlighting.JavaTokenizer;
+import org.mql.jcodeeditor.highlighting.Tokenizer;
 
 public class Context {
-	// string : file extensions
-	private static Map<String, JavaTokenizer> tokenizersMap = new HashMap<String, JavaTokenizer>();
+	// string : file extensions, we might have more that one highlighter for same extension
+	private static Map<String, List<Tokenizer>> highlightersMap = new HashMap<String, List<Tokenizer>>();
 	
 	static {
 		

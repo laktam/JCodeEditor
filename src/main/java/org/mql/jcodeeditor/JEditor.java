@@ -30,6 +30,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultStyledDocument;
 
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
+import org.mql.jcodeeditor.highlighting.JavaHighlighter;
 import org.mql.jcodeeditor.highlighting.JavaTokenizer;
 import org.mql.jcodeeditor.utils.Styles;
 
@@ -58,8 +59,8 @@ public class JEditor extends JTabbedPane{
 		textPane.setText(content);
 		
 		//here i should use the extensions if they offer a highlighter for this file type
-		Styles.setDocument(document);
-		Styles.setTokenizer(new JavaTokenizer());
+		// ishould ask the context if there is a highlighter for this extension
+		Styles.setHighlighter(new JavaHighlighter(new JavaTokenizer(), document));
 		Styles.highlight();
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
