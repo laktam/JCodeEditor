@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JavaTokenizer {
+public class JavaTokenizer implements Tokenizer{
 	private String keywordsRegEx;
 	private String commentsRegEx;
 	private String identifierRegEx;
@@ -107,5 +107,12 @@ public class JavaTokenizer {
 		if (identifiers.contains(value))
 			return true;
 		return false;
+	}
+
+
+
+	@Override
+	public String getTargetExtension() {
+		return ".java";
 	}
 }
