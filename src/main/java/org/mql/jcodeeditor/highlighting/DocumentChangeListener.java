@@ -10,13 +10,18 @@ import javax.swing.text.StyledDocument;
 import org.mql.jcodeeditor.utils.Styles;
 
 public class DocumentChangeListener implements DocumentListener {
+	private Highlighter highlighter;
+
+	public DocumentChangeListener(Highlighter highlighter) {
+		this.highlighter = highlighter;
+	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		// defer the style application until after the current event dispatch is
 		// complete.
 		SwingUtilities.invokeLater(() -> {
-			Styles.applyStyles();
+			highlighter.highlight();
 		});
 	}
 
@@ -25,7 +30,7 @@ public class DocumentChangeListener implements DocumentListener {
 		// defer the style application until after the current event dispatch is
 		// complete.
 		SwingUtilities.invokeLater(() -> {
-			Styles.applyStyles();
+			highlighter.highlight();
 		});
 	}
 
