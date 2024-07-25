@@ -4,8 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mql.java.laktam</groupId>
 	<artifactId>JCodeEditor</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>bundle</packaging>
+	<version>1.0</version>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
@@ -15,48 +14,9 @@
 			<version>3.5</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.core -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.core</artifactId>
-			<version>6.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.felix/maven-bundle-plugin -->
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>maven-bundle-plugin</artifactId>
-			<version>5.1.9</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.eclipse.equinox/common -->
-		<dependency>
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>common</artifactId>
-			<version>3.6.200-v20130402-1505</version>
-		</dependency>
-
 
 	</dependencies>
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
-				<version>5.1.9</version>
-				<configuration>
-					<instructions>
-						<Bundle-Name>JCodeEditor</Bundle-Name>
-						<Bundle-SymbolicName>mql.java.laktam.JCodeEditor</Bundle-SymbolicName>
-						<Bundle-Version>1.0.0</Bundle-Version>
-						<Import-Package> *;resolution:=optional</Import-Package>
-						<Export-Package></Export-Package>
-						<Bundle-Activator>org.mql.jcodeeditor.Activator</Bundle-Activator>
-					</instructions>
-				</configuration>
-			</plugin>
-		</plugins>
+	
 	</build>
 </project>
