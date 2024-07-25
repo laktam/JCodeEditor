@@ -11,13 +11,13 @@ import javax.swing.text.StyledDocument;
 import org.mql.jcodeeditor.highlighting.DocumentChangeListener;
 import org.mql.jcodeeditor.highlighting.Token;
 import org.mql.jcodeeditor.highlighting.TokenType;
-import org.mql.jcodeeditor.highlighting.Tokenizer;
+import org.mql.jcodeeditor.highlighting.JavaTokenizer;
 
 import java.util.List;
 
 public class Styles {
 	private static StyledDocument doc;
-	private static Tokenizer tokenizer;
+	private static JavaTokenizer tokenizer;
 	private static Style keywordStyle;
 	private static Style numberStyle;
 	private static Style identifierStyle;
@@ -62,7 +62,7 @@ public class Styles {
 		StyleConstants.setForeground(stringStyle, stringColor);
 	}
 
-	public static void setTokenizer(Tokenizer t) {
+	public static void setTokenizer(JavaTokenizer t) {
 		tokenizer = t;
 	}
 
