@@ -17,7 +17,7 @@ public class Context {
 	// this should be called to search for plugins related stuff
 	public static void init() {
 		//load classes
-//		findAllImplementations()
+
 	}
 	
 	
