@@ -25,10 +25,7 @@ public class JavaHighlighter implements Highlighter {
 	private Color keywordColor = new Color(127, 0, 85);
 	private Color numberColor = new Color(127, 0, 85);
 
-	public JavaHighlighter(Tokenizer tokenizer, StyledDocument doc) {
-		this.tokenizer = tokenizer;
-		this.doc = doc;
-
+	public JavaHighlighter() {
 		defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
 
 		keywordStyle = doc.addStyle("KeywordStyle", defaultStyle);
@@ -76,5 +73,15 @@ public class JavaHighlighter implements Highlighter {
 				doc.setCharacterAttributes(token.getStart(), token.getSize(), stringStyle, true);
 			}
 		}
+	}
+
+	@Override
+	public void setTokenizer(Tokenizer tokenizer) {
+		this.tokenizer = tokenizer;
+	}
+
+	@Override
+	public void setDocument(StyledDocument doc) {
+		this.doc = doc;
 	}
 }

@@ -2,12 +2,8 @@ package org.mql.jcodeeditor.highlighting;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
-import org.mql.jcodeeditor.utils.Styles;
 
 public class DocumentChangeListener implements DocumentListener {
 	private Highlighter highlighter;
