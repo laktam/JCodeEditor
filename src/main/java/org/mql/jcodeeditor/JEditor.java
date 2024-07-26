@@ -61,7 +61,7 @@ public class JEditor extends JTabbedPane{
 		
 		//here i should use the extensions if they offer a highlighter for this file type
 		// ishould ask the context if there is a highlighter for this extension
-		String extension =  file.getName().substring(file.getName().lastIndexOf("."));
+		String extension =  file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		System.out.println(extension);
 		Highlighter h = Context.getHighlighter(extension);
 		if(h != null) {
