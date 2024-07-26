@@ -84,4 +84,10 @@ public class JavaHighlighter implements Highlighter {
 	public void setDocument(StyledDocument doc) {
 		this.doc = doc;
 	}
+
+	@Override
+	public String getTargetExtension() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

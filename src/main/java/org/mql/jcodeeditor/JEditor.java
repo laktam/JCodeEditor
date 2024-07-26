@@ -61,9 +61,14 @@ public class JEditor extends JTabbedPane{
 		
 		//here i should use the extensions if they offer a highlighter for this file type
 		// ishould ask the context if there is a highlighter for this extension
-		Highlighter h = Context.getHighlighter();
-		h.setDocument(document);
-		h.highlight();
+		String extension =  file.getName().substring(file.getName().lastIndexOf("."));
+		System.out.println(extension);
+		Highlighter h = Context.getHighlighter(extension);
+		if(h != null) {
+			h.setDocument(document);
+			h.highlight();
+		}
+		
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
 
