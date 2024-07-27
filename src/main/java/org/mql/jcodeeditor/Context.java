@@ -21,19 +21,23 @@ public class Context {
 	// this should be called to search for plugins related stuff
 	public static void init() {
 		// load classes
-		Highlighter h = PluginLoader.loadPlugins(Highlighter.class).get(0);
-		Tokenizer t = PluginLoader.loadPlugins(Tokenizer.class).get(0);
-		h.setTokenizer(t);
-
-		String targetExtension = h.getTargetExtension();
-		if (!highlightersMap.containsKey(targetExtension)) {
-			List<Highlighter> highlighterList = new Vector<Highlighter>();
-			highlighterList.add(h);
-			highlightersMap.put(targetExtension, highlighterList);
-		} else {
-			highlightersMap.get(targetExtension).add(h);
+		List<Highlighter> hList = PluginLoader.loadPlugins(Highlighter.class);
+		List<Tokenizer >tList = PluginLoader.loadPlugins(Tokenizer.class);
+		for(Tokenizer t : tList) {
+			for(Highlighter h : hList) {
+				if(h.getTargetExtension().equals(t.getTargetExtension())){
+					h.setTokenizer(t);
+					String targetExtension = h.getTargetExtension();
+					if (!highlightersMap.containsKey(targetExtension)) {
+						List<Highlighter> highlighterList = new Vector<Highlighter>();
+						highlighterList.add(h);
+						highlightersMap.put(targetExtension, highlighterList);
+					} else {
+						highlightersMap.get(targetExtension).add(h);
+					}
+				}
+			}
 		}
-		;
 	}
 
 	public static Highlighter getHighlighter(String extension) {
