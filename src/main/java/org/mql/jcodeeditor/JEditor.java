@@ -46,6 +46,9 @@ public class JEditor extends JTabbedPane{
 	public  void openFile( File file) {
 		addClosableTab(file.getName());
 		DefaultStyledDocument document = new DefaultStyledDocument();
+		// add document in context
+		Context.addDocument(document);
+		
 		JTextPane textPane = new JTextPane(document);
 		textPane.addKeyListener(new KeyboardSavingListener(textPane, file));
 		textPanes.add(textPane);

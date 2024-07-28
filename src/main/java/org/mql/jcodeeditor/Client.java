@@ -8,7 +8,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 public class Client {
 	public static void main(String[] args) {
 		FlatLightLaf.setup();
-		//configuration
 		UIManager.put( "TabbedPane.selectedBackground", Color.white );
 		new JCodeEditor();
 
