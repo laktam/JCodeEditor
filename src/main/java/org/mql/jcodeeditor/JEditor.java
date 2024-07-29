@@ -32,27 +32,23 @@ import javax.swing.text.DefaultStyledDocument;
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 import org.mql.jcodeeditor.highlighting.Highlighter;
 
-
-
-
-public class JEditor extends JTabbedPane{
+public class JEditor extends JTabbedPane {
 	private static File focusedFile;
 	private static JTextArea focusedTextArea;
 	private static List<JTextPane> textPanes;
+
 	public JEditor() {
 		textPanes = new Vector<JTextPane>();
 	}
 
-	public  void openFile( File file) {
+	public void openFile(File file) {
 		addClosableTab(file.getName());
 		DefaultStyledDocument document = new DefaultStyledDocument();
-		// add document in context
-		Context.addDocument(document);
-		
+
 		JTextPane textPane = new JTextPane(document);
 		textPane.addKeyListener(new KeyboardSavingListener(textPane, file));
 		textPanes.add(textPane);
-		JScrollPane scrollPane = new JScrollPane(textPane);		
+		JScrollPane scrollPane = new JScrollPane(textPane);
 		// read file
 		String content = "";
 		try {
@@ -61,22 +57,24 @@ public class JEditor extends JTabbedPane{
 			e.printStackTrace();
 		}
 		textPane.setText(content);
-		
-		//here i should use the extensions if they offer a highlighter for this file type
+		// add document in context
+		Context.addDocument(document);
+		// here i should use the extensions if they offer a highlighter for this file
+		// type
 		// ishould ask the context if there is a highlighter for this extension
-		String extension =  file.getName().substring(file.getName().lastIndexOf(".") + 1);
+		String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		System.out.println(extension);
 		Highlighter h = Context.getHighlighter(extension);
-		if(h != null) {
+		if (h != null) {
 			h.setDocument(document);
 			h.highlight();
 		}
-		
+
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
 
 	}
-	
+
 	private static String readFile(File file) throws IOException {
 		StringBuilder content = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -88,10 +86,10 @@ public class JEditor extends JTabbedPane{
 		return content.toString();
 	}
 
-	public void addClosableTab( String title) {
+	public void addClosableTab(String title) {
 		JPanel panel = new JPanel();
 		addTab(title, panel);
-		setTabComponentAt(this.indexOfComponent(panel), createTabComponent( panel, title));
+		setTabComponentAt(this.indexOfComponent(panel), createTabComponent(panel, title));
 	}
 
 	private JComponent createTabComponent(JPanel panel, String title) {
@@ -105,7 +103,7 @@ public class JEditor extends JTabbedPane{
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int index =  JEditor.this.indexOfTabComponent(tabComponent);
+				int index = JEditor.this.indexOfTabComponent(tabComponent);
 				if (index != -1) {
 					JEditor.this.remove(index);
 					JExplorer.getOpenFiles().remove(index);

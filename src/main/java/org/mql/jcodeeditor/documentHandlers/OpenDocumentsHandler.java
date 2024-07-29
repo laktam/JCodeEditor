@@ -11,5 +11,6 @@ import javax.swing.text.StyledDocument;
  */
 public interface OpenDocumentsHandler {
 	public void setDocuments(List<StyledDocument> openDocuments);
+	public void addDocument(StyledDocument doc);
 	public void execute();
 }

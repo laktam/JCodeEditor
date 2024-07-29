@@ -14,7 +14,7 @@ import org.mql.jcodeeditor.plugins.PluginLoader;
 
 public class Context {
 	private static List<StyledDocument> documents = new Vector<StyledDocument>();
-	
+	private static List<OpenDocumentsHandler> openDocsHandlers = new Vector<OpenDocumentsHandler>();
 	// string : file extensions, we might have more that one highlighter for same
 	// extension
 	private static Map<String, List<Highlighter>> highlightersMap = new HashMap<String, List<Highlighter>>();
@@ -44,9 +44,10 @@ public class Context {
 			}
 		}
 		
-		// autocompletion
+		// docs handlers
 		 List<OpenDocumentsHandler> docHandlers =  PluginLoader.loadPlugins(OpenDocumentsHandler.class);
 		 for(OpenDocumentsHandler h : docHandlers) {
+			 openDocsHandlers.add(h);
 			 h.setDocuments(documents);
 			 h.execute();
 		 }
@@ -64,6 +65,9 @@ public class Context {
 	
 	public static void addDocument(StyledDocument doc) {
 		documents.add(doc);
+		for(OpenDocumentsHandler h : openDocsHandlers) {
+			h.addDocument(doc);
+		}
 	}
 
 }
