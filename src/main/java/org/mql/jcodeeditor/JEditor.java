@@ -58,7 +58,7 @@ public class JEditor extends JTabbedPane {
 		}
 		textPane.setText(content);
 		// add document in context
-		Context.addDocument(document);
+		Context.addTextPane(textPane);
 		// here i should use the extensions if they offer a highlighter for this file
 		// type
 		// ishould ask the context if there is a highlighter for this extension

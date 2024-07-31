@@ -5,16 +5,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.JTextPane;
 import javax.swing.text.StyledDocument;
 
-import org.mql.jcodeeditor.documentHandlers.OpenDocumentsHandler;
+import org.mql.jcodeeditor.documentHandlers.TextPanesHandler;
 import org.mql.jcodeeditor.highlighting.Highlighter;
 import org.mql.jcodeeditor.highlighting.Tokenizer;
 import org.mql.jcodeeditor.plugins.PluginLoader;
 
 public class Context {
-	private static List<StyledDocument> documents = new Vector<StyledDocument>();
-	private static List<OpenDocumentsHandler> openDocsHandlers = new Vector<OpenDocumentsHandler>();
+	private static List<JTextPane> textPanes = new Vector<JTextPane>();
+	private static List<TextPanesHandler> textPaneHandlers = new Vector<TextPanesHandler>();
 	// string : file extensions, we might have more that one highlighter for same
 	// extension
 	private static Map<String, List<Highlighter>> highlightersMap = new HashMap<String, List<Highlighter>>();
@@ -45,11 +46,11 @@ public class Context {
 		}
 		
 		// docs handlers
-		 List<OpenDocumentsHandler> docHandlers =  PluginLoader.loadPlugins(OpenDocumentsHandler.class);
-		 for(OpenDocumentsHandler h : docHandlers) {
-			 openDocsHandlers.add(h);
-			 h.setDocuments(documents);
-			 h.execute();
+		 List<TextPanesHandler> tpHandlers =  PluginLoader.loadPlugins(TextPanesHandler.class);
+		 for(TextPanesHandler tph : tpHandlers ) {
+			 textPaneHandlers.add(tph);
+			 tph.setTextPanes(textPanes);
+			 tph.execute();
 		 }
 	}
 
@@ -63,10 +64,10 @@ public class Context {
 			return null;
 	}
 	
-	public static void addDocument(StyledDocument doc) {
-		documents.add(doc);
-		for(OpenDocumentsHandler h : openDocsHandlers) {
-			h.addDocument(doc);
+	public static void addTextPane(JTextPane textPane) {
+		textPanes.add(textPane);
+		for(TextPanesHandler h : textPaneHandlers) {
+			h.addTextPane(textPane);
 		}
 	}
 
