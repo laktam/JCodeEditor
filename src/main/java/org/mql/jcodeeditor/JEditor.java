@@ -1,5 +1,6 @@
 package org.mql.jcodeeditor;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
@@ -17,6 +18,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -28,13 +30,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Element;
 
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 import org.mql.jcodeeditor.highlighting.Highlighter;
 
 public class JEditor extends JTabbedPane {
-	private static File focusedFile;
-	private static JTextArea focusedTextArea;
 	private static List<JTextPane> textPanes;
 
 	public JEditor() {
@@ -48,7 +49,6 @@ public class JEditor extends JTabbedPane {
 		JTextPane textPane = new JTextPane(document);
 		textPane.addKeyListener(new KeyboardSavingListener(textPane, file));
 		textPanes.add(textPane);
-		JScrollPane scrollPane = new JScrollPane(textPane);
 		// read file
 		String content = "";
 		try {
@@ -69,7 +69,26 @@ public class JEditor extends JTabbedPane {
 			h.setDocument(document);
 			h.highlight();
 		}
-
+		//
+//		add line numbers in scrollPane
+		// TODO need to add listener to update line numbers
+		JTextArea lineNumbersArea = new JTextArea();
+		Element root = document.getDefaultRootElement();
+        int c = root.getElementCount();
+        System.out.println("line numbers : " + c);
+        String lineNumbers = "";
+        for(int i = 1; i <= c;i++) {
+        	lineNumbers += (i + "\n");
+        }
+		lineNumbersArea.setText(lineNumbers);
+		lineNumbersArea.setPreferredSize(new Dimension(30, lineNumbersArea.getHeight()));
+		
+		JPanel p = new JPanel(new BorderLayout());
+		p.add(lineNumbersArea, BorderLayout.WEST);
+		p.add(textPane, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(p);
+		
+		
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
 

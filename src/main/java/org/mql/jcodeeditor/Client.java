@@ -10,7 +10,5 @@ public class Client {
 		FlatLightLaf.setup();
 		UIManager.put( "TabbedPane.selectedBackground", Color.white );
 		new JCodeEditor();
-
 	}
 }
-
