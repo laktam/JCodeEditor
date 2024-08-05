@@ -1,5 +1,6 @@
 package org.mql.jcodeeditor;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,10 @@ import org.mql.jcodeeditor.highlighting.Tokenizer;
 import org.mql.jcodeeditor.plugins.PluginLoader;
 
 public class Context {
+	// colors and other information to be able to change them for dark mode and themes
+//	private static Color lineNumbersColor = new Color(232, 232, 232); // a gray darker a bit than the very light gray
+	private static Color lineNumbersColor = new Color(240, 240, 240);
+	
 	private static List<JTextPane> textPanes = new Vector<JTextPane>();
 	private static List<TextPanesHandler> textPaneHandlers = new Vector<TextPanesHandler>();
 	// string : file extensions, we might have more that one highlighter for same
@@ -71,4 +76,7 @@ public class Context {
 		}
 	}
 
+	public static Color getLineNumbersColor() {
+		return lineNumbersColor;
+	}
 }
