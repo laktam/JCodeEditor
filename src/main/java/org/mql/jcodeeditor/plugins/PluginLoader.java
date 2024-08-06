@@ -12,6 +12,12 @@ import java.util.Vector;
 import org.mql.jcodeeditor.highlighting.Highlighter;
 import org.mql.jcodeeditor.highlighting.Tokenizer;
 
+/*
+ * if a class implements more than one interface it will get loaded more than onece
+ * but only the first one will be used and the object will be casted when needed in other
+ * format
+ * 
+ */
 public class PluginLoader {
 	private static final String PLUGINS_DIR = "plugins/";
     private static Map<String, Object> loadedPlugins = new HashMap<>();
@@ -28,8 +34,6 @@ public class PluginLoader {
 
 		if (jarFiles != null) {
 			for (File jar : jarFiles) {
-				System.out.println("Loading JAR: " + jar.getAbsolutePath());
-
 				try {
 					URL jarUrl = jar.toURI().toURL();
 					URLClassLoader classLoader = new URLClassLoader(new URL[] { jarUrl },

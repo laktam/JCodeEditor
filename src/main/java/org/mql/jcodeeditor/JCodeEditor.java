@@ -62,8 +62,6 @@ public class JCodeEditor extends JFrame {
 		JSplitPane splitPane = new JSplitPane(SwingConstants.VERTICAL, explorer, editor);
 		add(splitPane);
 		createMenuBar();
-		//open a file
-		explorerTree.openFileInExplorer(Path.of("D:\\Projects\\java workspace\\JCodeEditor\\src\\org\\mql\\jcodeeditor\\utils"));
 		pack();
 		setVisible(true);
 	}

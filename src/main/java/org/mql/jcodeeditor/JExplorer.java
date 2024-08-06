@@ -20,13 +20,19 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.mql.jcodeeditor.properties.PropertiesManager;
+
 public class JExplorer extends JTree {private static final long serialVersionUID = 1L;
 	private static List<File> openFiles = new Vector<File>();
 	private DefaultTreeModel treeModel;
 
 	public JExplorer() {
 		treeModel = new OrderedTreeModel(null);
-		openFileInExplorer(Path.of(""));
+		
+		// get last opened file
+		String lastOpenedFile = PropertiesManager.readProperty("lastOpenedFile");
+		System.out.println(lastOpenedFile);
+		openFileInExplorer(Path.of(lastOpenedFile));
 		setModel(treeModel);
 		// Enable drag-and-drop
 		setDragEnabled(true);
@@ -34,12 +40,7 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 		setTransferHandler(new JExplorerTransferHandler());
 		// Expand the tree
 		expandTree();
-		addHierarchyListener(new HierarchyListener() {
-            @Override
-            public void hierarchyChanged(HierarchyEvent e) {
-            	 
-            }
-        });
+		
 	}
 
 	// add files and folders to explorer JTree
@@ -50,6 +51,8 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 			File subFiles[] = file.listFiles();
 			for (File f : subFiles) {
 				add(f, root);
+				// the list of files to use in the FilesHandler interface
+				Context.addExplorerFile(f);
 			}
 		}
 		treeModel.setRoot(root);
@@ -63,6 +66,8 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 			File subFiles[] = file.listFiles();
 			for (File f : subFiles) {
 				add(f, fileNode);
+				// the list of files to use in the FilesHandler interface
+				Context.addExplorerFile(f);
 			}
 		}
 
