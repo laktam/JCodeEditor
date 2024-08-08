@@ -28,22 +28,17 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 
 	public JExplorer() {
 		treeModel = new OrderedTreeModel(null);
-		
-		// get last opened file
 		String lastOpenedFile = PropertiesManager.readProperty("lastOpenedFile");
 		System.out.println(lastOpenedFile);
 		openFileInExplorer(Path.of(lastOpenedFile));
 		setModel(treeModel);
-		// Enable drag-and-drop
 		setDragEnabled(true);
 		setDropMode(DropMode.ON_OR_INSERT);
 		setTransferHandler(new JExplorerTransferHandler());
-		// Expand the tree
 		expandTree();
 		
 	}
 
-	// add files and folders to explorer JTree
 	public void openFileInExplorer(Path path) {
 		File file = path.toFile();
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(file);
@@ -51,7 +46,6 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 			File subFiles[] = file.listFiles();
 			for (File f : subFiles) {
 				add(f, root);
-				// the list of files to use in the FilesHandler interface
 				Context.addExplorerFile(f);
 			}
 		}
@@ -66,7 +60,6 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 			File subFiles[] = file.listFiles();
 			for (File f : subFiles) {
 				add(f, fileNode);
-				// the list of files to use in the FilesHandler interface
 				Context.addExplorerFile(f);
 			}
 		}
@@ -86,7 +79,6 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 		return treeModel;
 	}
 
-	// drag and drop
 	private void expandTree() {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 		expandAll(this, new TreePath(root.getPath()), true);

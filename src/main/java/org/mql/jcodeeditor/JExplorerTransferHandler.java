@@ -286,7 +286,6 @@ public class JExplorerTransferHandler extends TransferHandler {
 			File sourceFile = (File) movedNode.getUserObject();
 			
 			File destinationFile = (File) dropDestination.getUserObject();
-			// file
 			try {
 				FileUtils.copy(sourceFile.toPath(), destinationFile.toPath());
 				FileUtils.updateFilesInNodes(movedNode, dropDestination);
@@ -304,19 +303,3 @@ public class JExplorerTransferHandler extends TransferHandler {
 	}
 }
 
-//if (dropDestination.equals(movedNodes[i])) {
-//	System.out.println("trying to past a node in it self");
-//	// tree node
-//	//create a new node for the copy
-//	DefaultMutableTreeNode copyNode = copyNode(dropDestination);
-//	model.insertNodeInto(copyNode, dropDestination, i);
-//	File sourceFile = (File) copyNode.getUserObject();
-//	File destinationFile = (File) dropDestination.getUserObject();
-//	// file
-//	try {
-//		FileUtils.copy(sourceFile.toPath(), destinationFile.toPath());
-//		FileUtils.updateFilesInNodes(copyNode, dropDestination);
-//	} catch (IOException e) {
-//		e.printStackTrace();
-//	}
-//} 

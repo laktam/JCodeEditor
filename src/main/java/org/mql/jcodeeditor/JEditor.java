@@ -62,11 +62,7 @@ public class JEditor extends JTabbedPane {
 			e.printStackTrace();
 		}
 		textPane.setText(content);
-		// add document in context
 		Context.addTextPane(textPane);
-		// here i should use the extensions if they offer a highlighter for this file
-		// type
-		// ishould ask the context if there is a highlighter for this extension
 		String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		System.out.println(extension);
 		Highlighter h = Context.getHighlighter(extension);
@@ -74,9 +70,7 @@ public class JEditor extends JTabbedPane {
 			h.setDocument(document);
 			h.highlight();
 		}
-		//
-//		add line numbers in scrollPane
-		// TODO need to add listener to update line numbers
+
 		JTextArea lineNumbersArea = new JTextArea();
 		Element root = document.getDefaultRootElement();
 		int c = root.getElementCount();
@@ -94,8 +88,6 @@ public class JEditor extends JTabbedPane {
 		p.add(lineNumbersArea, BorderLayout.WEST);
 		p.add(textPane, BorderLayout.CENTER);
 		JScrollPane scrollPane = new JScrollPane(p);
-
-		// add listener for new lines to update line numbers
 		document.addDocumentListener(new NewLineDocumentListener(document, lineNumbersArea));
 
 		setComponentAt(this.getTabCount() - 1, scrollPane);
@@ -104,13 +96,6 @@ public class JEditor extends JTabbedPane {
 	}
 
 	private static String readFile(File file) throws IOException {
-//		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-//			String line;
-//			while ((line = reader.readLine()) != null) {
-//				content.append(line).append("\n");
-//			}
-//			// remove last added new line
-//		}
         StringBuilder text = new StringBuilder();
 		try (FileInputStream fis = new FileInputStream(file)) {
             int ch;
@@ -179,8 +164,6 @@ public class JEditor extends JTabbedPane {
 
 		@Override
 		public void changedUpdate(DocumentEvent e) {
-			// TODO Auto-generated method stub
-
 		}
 
 	}
