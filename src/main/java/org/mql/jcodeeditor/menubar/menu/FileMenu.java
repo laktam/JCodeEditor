@@ -10,6 +10,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.mql.jcodeeditor.JEditor;
 import org.mql.jcodeeditor.JExplorer;
+import org.mql.jcodeeditor.menubar.ExitItem;
 import org.mql.jcodeeditor.menubar.OpenItem;
 import org.mql.jcodeeditor.menubar.SaveItem;
 import org.mql.jcodeeditor.utils.DirectoryWatcher;
@@ -17,11 +18,11 @@ import org.mql.jcodeeditor.utils.DirectoryWatcher;
 public class FileMenu extends JMenu {
 
 	public FileMenu(String title, JEditor editor, DefaultTreeModel treeModel,
-			JExplorer explorerTree) {
+			JExplorer explorerTree, JFrame jFrame) {
 		super(title);
 		JMenuItem openItem = new OpenItem(explorerTree);
 		JMenuItem saveItem = new SaveItem(editor);
-		JMenuItem exitItem = new JMenuItem("Exit");
+		JMenuItem exitItem = new ExitItem(jFrame);
 
 		add(openItem);
 		add(saveItem);
