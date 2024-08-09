@@ -15,7 +15,6 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 	private final Icon closedIcon;
 
 	public CustomTreeCellRenderer() {
-		// Load custom icons
 		leafIcon = UIManager.getIcon("Tree.leafIcon");
 		openIcon = UIManager.getIcon("Tree.openIcon");
 		closedIcon = UIManager.getIcon("Tree.closedIcon");
@@ -37,7 +36,6 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 				} else if (file.isDirectory()) {
 					setIcon(closedIcon);
 				}
-				// Change the text displayed
 				setText(file.getName());
 			}
 

@@ -188,14 +188,11 @@ public class TreeTransferHandler extends TransferHandler {
 		System.out.println("dst node " +(destinationNode));
 
 		try {
-
-//			Path destinationPath = FileMover.buildPath(rootPath, newPaths);
 			FileUtils.moveFileOrDirectory(((File) sourceNode.getUserObject()).toPath(),
 					((File) destinationNode.getUserObject()).toPath());
 			FileUtils.updateFilesInNodes(sourceNode, destinationNode);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
