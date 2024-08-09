@@ -10,9 +10,9 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.mql.jcodeeditor.JEditor;
 import org.mql.jcodeeditor.JExplorer;
-import org.mql.jcodeeditor.menubar.ExitItem;
-import org.mql.jcodeeditor.menubar.OpenItem;
-import org.mql.jcodeeditor.menubar.SaveItem;
+import org.mql.jcodeeditor.menubar.items.ExitItem;
+import org.mql.jcodeeditor.menubar.items.OpenItem;
+import org.mql.jcodeeditor.menubar.items.SaveItem;
 import org.mql.jcodeeditor.utils.DirectoryWatcher;
 
 public class FileMenu extends JMenu {
