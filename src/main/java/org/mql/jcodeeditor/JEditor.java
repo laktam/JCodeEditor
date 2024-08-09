@@ -23,6 +23,8 @@ import javax.swing.ActionMap;
 import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -93,6 +95,19 @@ public class JEditor extends JTabbedPane {
 		setComponentAt(this.getTabCount() - 1, scrollPane);
 		setSelectedIndex(this.getTabCount() - 1);
 
+	}
+	
+	public void openPluginSetting() {
+		addClosableTab("Plugins Setting");
+		JPanel settingPanel = new JPanel();
+		
+		JCheckBox checkBox = new JCheckBox();
+		JLabel pluginName = new JLabel("Autocompleter");
+		settingPanel.add(pluginName);
+		settingPanel.add(checkBox);
+		
+		setComponentAt(this.getTabCount() - 1, settingPanel);
+		setSelectedIndex(this.getTabCount() - 1);
 	}
 
 	private static String readFile(File file) throws IOException {

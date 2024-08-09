@@ -45,6 +45,7 @@ import javax.swing.tree.TreeModel;
 import org.mql.jcodeeditor.eventlisteners.explorerJTree.DoubleClickListener;
 import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
 import org.mql.jcodeeditor.menubar.menu.FileMenu;
+import org.mql.jcodeeditor.menubar.menu.SettingMenu;
 
 public class JCodeEditor extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -101,7 +102,9 @@ public class JCodeEditor extends JFrame {
 	private void createMenuBar() {
 		menuBar = new JMenuBar();
 		JMenu fileMenu = new FileMenu("File", editor, treeModel,explorerTree, this);
+		JMenu settingsMenu = new SettingMenu(editor);
 		menuBar.add(fileMenu);
+		menuBar.add(settingsMenu);
 		setJMenuBar(menuBar);
 	}
 
