@@ -1,4 +1,4 @@
-package org.mql.jcodeeditor.menubar;
+package org.mql.jcodeeditor.menubar.items;
 
 import java.io.File;
 
