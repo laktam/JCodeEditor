@@ -1,4 +1,4 @@
-package org.mql.jcodeeditor.eventlisteners.tabbedPane;
+package org.mql.jcodeeditor.eventlisteners;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

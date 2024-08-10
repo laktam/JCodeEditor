@@ -1,4 +1,4 @@
-package org.mql.jcodeeditor.eventlisteners.explorerJTree;
+package org.mql.jcodeeditor.eventlisteners;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
