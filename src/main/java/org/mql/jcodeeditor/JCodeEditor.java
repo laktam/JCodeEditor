@@ -42,8 +42,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
-import org.mql.jcodeeditor.eventlisteners.explorerJTree.DoubleClickListener;
-import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
+import org.mql.jcodeeditor.eventlisteners.DoubleClickListener;
+import org.mql.jcodeeditor.eventlisteners.KeyboardSavingListener;
 import org.mql.jcodeeditor.menubar.menu.FileMenu;
 import org.mql.jcodeeditor.menubar.menu.SettingMenu;
 

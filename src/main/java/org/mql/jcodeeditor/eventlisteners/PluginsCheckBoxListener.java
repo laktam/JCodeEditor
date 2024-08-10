@@ -16,7 +16,9 @@ public class PluginsCheckBoxListener implements ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			reactivable.activate();
+			System.out.println("activate");
 		}else {
+			System.out.println("deactivate");
 			reactivable.deactivate();
 		}
 	}

@@ -8,8 +8,10 @@ import javax.swing.JMenuItem;
 import org.mql.jcodeeditor.JEditor;
 
 public class PluginsSettingItem extends JMenuItem{
-	
+	private static final long serialVersionUID = 1L;
+
 	public PluginsSettingItem(JEditor editor) {
+		super("Plugins");
 		addActionListener(new ActionListener() {
 			
 			@Override

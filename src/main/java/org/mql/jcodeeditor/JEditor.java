@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -38,8 +39,10 @@ import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 
-import org.mql.jcodeeditor.eventlisteners.tabbedPane.KeyboardSavingListener;
+import org.mql.jcodeeditor.eventlisteners.KeyboardSavingListener;
+import org.mql.jcodeeditor.eventlisteners.PluginsCheckBoxListener;
 import org.mql.jcodeeditor.highlighting.Highlighter;
+import org.mql.jcodeeditor.plugins.Reactivable;
 
 public class JEditor extends JTabbedPane {
 	private static final long serialVersionUID = 1L;
@@ -96,30 +99,36 @@ public class JEditor extends JTabbedPane {
 		setSelectedIndex(this.getTabCount() - 1);
 
 	}
-	
+
 	public void openPluginSetting() {
 		addClosableTab("Plugins Setting");
 		JPanel settingPanel = new JPanel();
-		
-		JCheckBox checkBox = new JCheckBox();
-		JLabel pluginName = new JLabel("Autocompleter");
-		settingPanel.add(pluginName);
-		settingPanel.add(checkBox);
-		
+
+		Set<String> reactivableNames = Context.getReactivableNames();
+		for (String reactivableName : reactivableNames) {
+			JCheckBox checkBox = new JCheckBox(reactivableName);
+			Reactivable reactivable =  Context.getReactivable(reactivableName);
+			checkBox.setSelected(reactivable.isActive());
+			checkBox.addItemListener(new PluginsCheckBoxListener(reactivable));
+			settingPanel.add(checkBox);
+		}
+		// open a dummy file because the index of other files should match there positions
+		// to be able to delete them when closing a tab 
+		JExplorer.getOpenFiles().add(new File(""));
 		setComponentAt(this.getTabCount() - 1, settingPanel);
 		setSelectedIndex(this.getTabCount() - 1);
 	}
 
 	private static String readFile(File file) throws IOException {
-        StringBuilder text = new StringBuilder();
+		StringBuilder text = new StringBuilder();
 		try (FileInputStream fis = new FileInputStream(file)) {
-            int ch;
-            while ((ch = fis.read()) != -1) {
-            	text.append((char) ch);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			int ch;
+			while ((ch = fis.read()) != -1) {
+				text.append((char) ch);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return text.toString();
 	}
 
@@ -154,7 +163,7 @@ public class JEditor extends JTabbedPane {
 	private static class NewLineDocumentListener implements DocumentListener {
 		private Document document;
 		private JTextArea lineNumbersArea;
-		
+
 		public NewLineDocumentListener(Document document, JTextArea lineNumbersArea) {
 			this.document = document;
 			this.lineNumbersArea = lineNumbersArea;

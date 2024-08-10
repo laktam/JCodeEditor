@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.logging.FileHandler;
 
@@ -17,6 +19,7 @@ import org.mql.jcodeeditor.highlighting.Highlighter;
 import org.mql.jcodeeditor.highlighting.Tokenizer;
 import org.mql.jcodeeditor.plugins.FilesHandler;
 import org.mql.jcodeeditor.plugins.PluginLoader;
+import org.mql.jcodeeditor.plugins.Reactivable;
 
 public class Context {
 	private static String settingPropertiesPath = "settings/settings.properties";
@@ -24,9 +27,10 @@ public class Context {
 	private static List<JTextPane> textPanes = new Vector<JTextPane>();
 	private static List<TextPanesHandler> textPaneHandlers = new Vector<TextPanesHandler>();
 	private static List<FilesHandler> filesHandlers = new Vector<FilesHandler>();
+	private static Map<String, Reactivable> reactivablesMap = new HashMap<>();
 	private static Map<String, List<Highlighter>> highlightersMap = new HashMap<String, List<Highlighter>>();
+	
 	static {
-
 		init();
 	}
 
@@ -56,6 +60,11 @@ public class Context {
 		}
 
 		filesHandlers = PluginLoader.loadPlugins(FilesHandler.class);
+		
+		List<Reactivable> reactivables = PluginLoader.loadPlugins(Reactivable.class);
+		for(Reactivable reactivable : reactivables) {
+			reactivablesMap.put(reactivable.getClass().getSimpleName(), reactivable);
+		}
 	}
 
 	public static Highlighter getHighlighter(String extension) {
@@ -87,5 +96,13 @@ public class Context {
 
 	public static String getSettingPropertiesPath() {
 		return settingPropertiesPath;
+	}
+	
+	public static Reactivable getReactivable(String key) {
+		return reactivablesMap.get(key);
+	}
+	
+	public static Set<String> getReactivableNames(){
+		return reactivablesMap.keySet();
 	}
 }
