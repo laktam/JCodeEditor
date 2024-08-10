@@ -31,7 +31,12 @@ public class PropertiesManager {
 
 	public static void writeProperty(String property, String value) {
 		Properties properties = new Properties();
-		properties.setProperty(property, value);
+		try (FileInputStream input = new FileInputStream(Context.getSettingPropertiesPath())) {
+	        properties.load(input);
+			properties.setProperty(property, value);
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
 
 		try (FileOutputStream output = new FileOutputStream(Context.getSettingPropertiesPath())) {
 			properties.store(output, "Application Settings");
