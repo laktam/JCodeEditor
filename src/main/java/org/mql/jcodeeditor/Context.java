@@ -72,7 +72,7 @@ public class Context {
 	
 		for(Reactivable reactivable : reactivables) {
 			String status = PropertiesManager.readProperty("plugins.status."+ reactivable.getClass().getSimpleName());
-			if("false".equals(status)) {
+			if("disabled".equals(status)) {
 				reactivable.deactivate();
 			}
 			// plugins should be activated by default when loaded
