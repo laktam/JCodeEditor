@@ -13,7 +13,7 @@ public class PropertiesManager {
 
 		try (FileInputStream input = new FileInputStream(Context.getSettingPropertiesPath())) {
 			properties.load(input);
-
+			
 			String result = properties.getProperty(property);
 			System.out.println("Last Opened File: " + result);
 			if (result != null) {

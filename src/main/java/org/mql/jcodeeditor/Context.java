@@ -20,6 +20,7 @@ import org.mql.jcodeeditor.highlighting.Tokenizer;
 import org.mql.jcodeeditor.plugins.FilesHandler;
 import org.mql.jcodeeditor.plugins.PluginLoader;
 import org.mql.jcodeeditor.plugins.Reactivable;
+import org.mql.jcodeeditor.properties.PropertiesManager;
 
 public class Context {
 	private static String settingPropertiesPath = "settings/settings.properties";
@@ -63,7 +64,18 @@ public class Context {
 		
 		List<Reactivable> reactivables = PluginLoader.loadPlugins(Reactivable.class);
 		for(Reactivable reactivable : reactivables) {
+			// TODO don't use simple name create a plugin class for all plugins that
+			// has a getName descriptions ...
 			reactivablesMap.put(reactivable.getClass().getSimpleName(), reactivable);
+		}
+	
+	
+		for(Reactivable reactivable : reactivables) {
+			String status = PropertiesManager.readProperty("plugins.status."+ reactivable.getClass().getSimpleName());
+			if("false".equals(status)) {
+				reactivable.deactivate();
+			}
+			// plugins should be activated by default when loaded
 		}
 	}
 

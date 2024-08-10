@@ -173,7 +173,6 @@ public class JEditor extends JTabbedPane {
 		public void insertUpdate(DocumentEvent e) {
 			Element root = document.getDefaultRootElement();
 			int c = root.getElementCount();
-			System.out.println("line numbers : " + c);
 			String lineNumbers = "";
 			for (int i = 1; i <= c; i++) {
 				lineNumbers += (i + "\n");
