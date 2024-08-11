@@ -42,7 +42,8 @@ import javax.swing.text.Element;
 import org.mql.jcodeeditor.eventlisteners.KeyboardSavingListener;
 import org.mql.jcodeeditor.eventlisteners.PluginsCheckBoxListener;
 import org.mql.jcodeeditor.highlighting.Highlighter;
-import org.mql.jcodeeditor.plugins.Reactivable;
+import org.mql.jcodeeditor.plugins.PluginSettingsProvider;
+import org.mql.jcodeeditor.plugins.Plugin;
 
 public class JEditor extends JTabbedPane {
 	private static final long serialVersionUID = 1L;
@@ -104,13 +105,20 @@ public class JEditor extends JTabbedPane {
 		addClosableTab("Plugins Setting");
 		JPanel settingPanel = new JPanel();
 
-		Set<String> reactivableNames = Context.getReactivableNames();
-		for (String reactivableName : reactivableNames) {
-			JCheckBox checkBox = new JCheckBox(reactivableName);
-			Reactivable reactivable =  Context.getReactivable(reactivableName);
-			checkBox.setSelected(reactivable.isActive());
-			checkBox.addItemListener(new PluginsCheckBoxListener(reactivable));
+		Set<String> pluginNames = Context.getPluginNames();
+		for (String pluginName : pluginNames) {
+			JCheckBox checkBox = new JCheckBox(pluginName);
+			Plugin plugin =  Context.getPlugin(pluginName);
+			checkBox.setSelected(plugin.isActive());
+			checkBox.addItemListener(new PluginsCheckBoxListener(plugin));
 			settingPanel.add(checkBox);
+			// other settings for this plugin
+			if(plugin instanceof PluginSettingsProvider) {
+				List<JComponent> settings = ((PluginSettingsProvider) plugin).getSettings();
+				for(JComponent setting : settings) {
+					settingPanel.add(setting);
+				}
+			}
 		}
 		// open a dummy file because the index of other files should match there positions
 		// to be able to delete them when closing a tab 

@@ -19,7 +19,7 @@ import org.mql.jcodeeditor.highlighting.Highlighter;
 import org.mql.jcodeeditor.highlighting.Tokenizer;
 import org.mql.jcodeeditor.plugins.FilesHandler;
 import org.mql.jcodeeditor.plugins.PluginLoader;
-import org.mql.jcodeeditor.plugins.Reactivable;
+import org.mql.jcodeeditor.plugins.Plugin;
 import org.mql.jcodeeditor.properties.PropertiesManager;
 
 public class Context {
@@ -28,7 +28,7 @@ public class Context {
 	private static List<JTextPane> textPanes = new Vector<JTextPane>();
 	private static List<TextPanesHandler> textPaneHandlers = new Vector<TextPanesHandler>();
 	private static List<FilesHandler> filesHandlers = new Vector<FilesHandler>();
-	private static Map<String, Reactivable> reactivablesMap = new HashMap<>();
+	private static Map<String, Plugin> pluginsMap = new HashMap<>();
 	private static Map<String, List<Highlighter>> highlightersMap = new HashMap<String, List<Highlighter>>();
 	
 	static {
@@ -62,20 +62,18 @@ public class Context {
 
 		filesHandlers = PluginLoader.loadPlugins(FilesHandler.class);
 		
-		List<Reactivable> reactivables = PluginLoader.loadPlugins(Reactivable.class);
-		for(Reactivable reactivable : reactivables) {
-			// TODO don't use simple name create a plugin class for all plugins that
-			// has a getName descriptions ...
-			reactivablesMap.put(reactivable.getClass().getSimpleName(), reactivable);
+		List<Plugin> plugins = PluginLoader.loadPlugins(Plugin.class);
+		for(Plugin plugin : plugins) {
+			pluginsMap.put(plugin.getClass().getSimpleName(), plugin);
 		}
 	
 	
-		for(Reactivable reactivable : reactivables) {
-			String status = PropertiesManager.readProperty("plugins.status."+ reactivable.getClass().getSimpleName());
+		for(Plugin plugin : plugins) {
+			String status = PropertiesManager.readProperty("plugins.status."+ plugin.getClass().getSimpleName());
 			if("disabled".equals(status)) {
-				reactivable.deactivate();
+				plugin.deactivate();
 			}
-			// plugins should be activated by default when loaded
+			// plugins are activated by default when loaded
 		}
 	}
 
@@ -110,11 +108,11 @@ public class Context {
 		return settingPropertiesPath;
 	}
 	
-	public static Reactivable getReactivable(String key) {
-		return reactivablesMap.get(key);
+	public static Plugin getPlugin(String key) {
+		return pluginsMap.get(key);
 	}
 	
-	public static Set<String> getReactivableNames(){
-		return reactivablesMap.keySet();
+	public static Set<String> getPluginNames(){
+		return pluginsMap.keySet();
 	}
 }

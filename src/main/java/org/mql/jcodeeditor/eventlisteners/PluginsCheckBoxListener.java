@@ -3,13 +3,13 @@ package org.mql.jcodeeditor.eventlisteners;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import org.mql.jcodeeditor.plugins.Reactivable;
+import org.mql.jcodeeditor.plugins.Plugin;
 import org.mql.jcodeeditor.properties.PropertiesManager;
 
 public class PluginsCheckBoxListener implements ItemListener {
-	private Reactivable reactivable;
+	private Plugin reactivable;
 
-	public PluginsCheckBoxListener(Reactivable reactivable) {
+	public PluginsCheckBoxListener(Plugin reactivable) {
 		this.reactivable = reactivable;
 	}
 
