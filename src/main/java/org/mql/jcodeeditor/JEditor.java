@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultStyledDocument;
@@ -58,6 +59,7 @@ public class JEditor extends JTabbedPane {
 		DefaultStyledDocument document = new DefaultStyledDocument();
 
 		JTextPane textPane = new JTextPane(document);
+		textPane.setFont(UIManager.getFont("TextPane.font"));
 		textPane.addKeyListener(new KeyboardSavingListener(textPane, file));
 		textPanes.add(textPane);
 		// read file
