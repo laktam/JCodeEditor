@@ -106,24 +106,27 @@ public class JEditor extends JTabbedPane {
 	public void openPluginSetting() {
 		addClosableTab("Plugins Setting");
 		JPanel settingPanel = new JPanel();
+		settingPanel.setLayout(new BoxLayout(settingPanel, BoxLayout.PAGE_AXIS));
 
 		Set<String> pluginNames = Context.getPluginNames();
 		for (String pluginName : pluginNames) {
 			JCheckBox checkBox = new JCheckBox(pluginName);
-			Plugin plugin =  Context.getPlugin(pluginName);
+			Plugin plugin = Context.getPlugin(pluginName);
 			checkBox.setSelected(plugin.isActive());
 			checkBox.addItemListener(new PluginsCheckBoxListener(plugin));
 			settingPanel.add(checkBox);
 			// other settings for this plugin
-			if(plugin instanceof PluginSettingsProvider) {
+			if (plugin instanceof PluginSettingsProvider) {
 				List<JComponent> settings = ((PluginSettingsProvider) plugin).getSettings();
-				for(JComponent setting : settings) {
+				for (JComponent setting : settings) {
+					setting.setMaximumSize(new Dimension(setting.getPreferredSize().width, setting.getPreferredSize().height));
 					settingPanel.add(setting);
 				}
 			}
 		}
-		// open a dummy file because the index of other files should match there positions
-		// to be able to delete them when closing a tab 
+		// open a dummy file because the index of other files should match there
+		// positions
+		// to be able to delete them when closing a tab
 		JExplorer.getOpenFiles().add(new File(""));
 		setComponentAt(this.getTabCount() - 1, settingPanel);
 		setSelectedIndex(this.getTabCount() - 1);
