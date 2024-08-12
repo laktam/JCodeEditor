@@ -2,6 +2,7 @@ package org.mql.jcodeeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
@@ -114,12 +115,14 @@ public class JEditor extends JTabbedPane {
 			Plugin plugin = Context.getPlugin(pluginName);
 			checkBox.setSelected(plugin.isActive());
 			checkBox.addItemListener(new PluginsCheckBoxListener(plugin));
+	        checkBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 			settingPanel.add(checkBox);
 			// other settings for this plugin
 			if (plugin instanceof PluginSettingsProvider) {
 				List<JComponent> settings = ((PluginSettingsProvider) plugin).getSettings();
 				for (JComponent setting : settings) {
 					setting.setMaximumSize(new Dimension(setting.getPreferredSize().width, setting.getPreferredSize().height));
+	                setting.setAlignmentX(Component.LEFT_ALIGNMENT);
 					settingPanel.add(setting);
 				}
 			}
