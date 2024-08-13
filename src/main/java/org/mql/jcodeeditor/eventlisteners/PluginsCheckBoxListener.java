@@ -7,22 +7,22 @@ import org.mql.jcodeeditor.plugins.Plugin;
 import org.mql.jcodeeditor.properties.PropertiesManager;
 
 public class PluginsCheckBoxListener implements ItemListener {
-	private Plugin reactivable;
+	private Plugin plugin;
 
-	public PluginsCheckBoxListener(Plugin reactivable) {
-		this.reactivable = reactivable;
+	public PluginsCheckBoxListener(Plugin plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
-			reactivable.activate();
+			plugin.activate();
 			System.out.println("activate");
-			PropertiesManager.writeProperty("plugins.status." + reactivable.getClass().getSimpleName(), "active");
+			PropertiesManager.writeProperty("plugins."+ plugin.getName() + ".status", "active");
 		}else {
 			System.out.println("deactivate");
-			PropertiesManager.writeProperty("plugins.status." + reactivable.getClass().getSimpleName(), "disabled");
-			reactivable.deactivate();
+			PropertiesManager.writeProperty("plugins."+ plugin.getName() + ".status", "disabled");
+			plugin.deactivate();
 		}
 	}
 

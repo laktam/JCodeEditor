@@ -19,6 +19,7 @@ import org.mql.jcodeeditor.highlighting.Highlighter;
 import org.mql.jcodeeditor.highlighting.Tokenizer;
 import org.mql.jcodeeditor.plugins.FilesHandler;
 import org.mql.jcodeeditor.plugins.PluginLoader;
+import org.mql.jcodeeditor.plugins.PropertiesHandler;
 import org.mql.jcodeeditor.plugins.Plugin;
 import org.mql.jcodeeditor.properties.PropertiesManager;
 
@@ -66,6 +67,8 @@ public class Context {
 		for(Plugin plugin : plugins) {
 			pluginsMap.put(plugin.getClass().getSimpleName(), plugin);
 		}
+		
+		List<PropertiesHandler> propertiesHandlers = PluginLoader.loadPlugins(PropertiesHandler.class);
 	
 	
 		for(Plugin plugin : plugins) {
