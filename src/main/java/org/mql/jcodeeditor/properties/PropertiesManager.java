@@ -13,27 +13,27 @@ public class PropertiesManager {
 		Properties properties = new Properties();
 		File propertiesFile = new File(Context.getSettingPropertiesPath());
 		try {
-		if (!propertiesFile.exists()) {
+			if (!propertiesFile.exists()) {
 				propertiesFile.getParentFile().mkdirs();
 				propertiesFile.createNewFile();
 				// TODO write default properties
-		}
-				try (FileInputStream input = new FileInputStream(propertiesFile)) {
-					properties.load(input);
-
-					String result = properties.getProperty(property);
-					System.out.println("Last Opened File: " + result);
-					if (result != null) {
-						return result;
-					} else {
-						return "";
-					}
-
-				}
-			}catch(IOException ex){
-				ex.printStackTrace();
 			}
-	return"";
+			try (FileInputStream input = new FileInputStream(propertiesFile)) {
+				properties.load(input);
+
+				String result = properties.getProperty(property);
+				System.out.println("Last Opened File: " + result);
+				if (result != null) {
+					return result;
+				} else {
+					return "";
+				}
+
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return "";
 
 	}
 
