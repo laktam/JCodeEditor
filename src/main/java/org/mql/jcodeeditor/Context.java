@@ -24,7 +24,9 @@ import org.mql.jcodeeditor.plugins.Plugin;
 import org.mql.jcodeeditor.properties.PropertiesManager;
 
 public class Context {
-	private static String settingPropertiesPath = "settings/settings.properties";
+    String filePath = System.getProperty("user.home") + "/config.properties";
+
+	private static String settingPropertiesPath = System.getProperty("user.home") +  "/JCodeEditorSettings/settings.properties";
 	private static Color lineNumbersColor = new Color(240, 240, 240);
 	private static List<JTextPane> textPanes = new Vector<JTextPane>();
 	private static List<TextPanesHandler> textPaneHandlers = new Vector<TextPanesHandler>();
@@ -68,11 +70,13 @@ public class Context {
 			pluginsMap.put(plugin.getClass().getSimpleName(), plugin);
 		}
 		
-		List<PropertiesHandler> propertiesHandlers = PluginLoader.loadPlugins(PropertiesHandler.class);
-	
+//		List<PropertiesHandler> propertiesHandlers = PluginLoader.loadPlugins(PropertiesHandler.class);
+//		for(PropertiesHandler ph: propertiesHandlers ) {
+//			ph.setPropertiesManager();
+//		}
 	
 		for(Plugin plugin : plugins) {
-			String status = PropertiesManager.readProperty("plugins.status."+ plugin.getClass().getSimpleName());
+			String status = PropertiesManager.readProperty("plugins."+ plugin.getClass().getSimpleName() + ".status");
 			if("disabled".equals(status)) {
 				plugin.deactivate();
 			}
