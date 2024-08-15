@@ -70,13 +70,8 @@ public class Context {
 			pluginsMap.put(plugin.getClass().getSimpleName(), plugin);
 		}
 		
-//		List<PropertiesHandler> propertiesHandlers = PluginLoader.loadPlugins(PropertiesHandler.class);
-//		for(PropertiesHandler ph: propertiesHandlers ) {
-//			ph.setPropertiesManager();
-//		}
-	
 		for(Plugin plugin : plugins) {
-			String status = PropertiesManager.readProperty("plugins."+ plugin.getClass().getSimpleName() + ".status");
+			String status = PropertiesManager.readProperty("plugins."+ plugin.getName() + ".status");
 			if("disabled".equals(status)) {
 				plugin.deactivate();
 			}
