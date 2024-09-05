@@ -35,7 +35,7 @@ public class JExplorer extends JTree {private static final long serialVersionUID
 		setDragEnabled(true);
 		setDropMode(DropMode.ON_OR_INSERT);
 		setTransferHandler(new JExplorerTransferHandler());
-		expandTree();
+//		expandTree();
 		
 	}
 
